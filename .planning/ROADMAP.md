@@ -32,11 +32,11 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can delete their account and all associated data is removed (GDPR erasure)
   4. App displays biometric consent screen with explicit opt-in before any iris capture, adapting consent flows based on user jurisdiction (GDPR/BIPA/CCPA)
   5. Docker Compose starts the full local dev stack (FastAPI, PostgreSQL, Redis, Celery worker, S3-compatible storage) with a single command
-**Plans**: 3 plans (1/3 complete)
+**Plans**: 3 plans (2/3 complete)
 
 Plans:
 - [x] 01-01-PLAN.md -- Backend scaffolding: FastAPI, PostgreSQL, SQLAlchemy 2.0 async, Docker Compose, S3 storage, Celery/Redis
-- [ ] 01-02-PLAN.md -- Authentication: email/password signup, Apple/Google Sign In, JWT tokens, email verification, password reset, session persistence
+- [x] 01-02-PLAN.md -- Authentication: email/password signup, Apple/Google Sign In, JWT tokens, email verification, password reset, session persistence
 - [ ] 01-03-PLAN.md -- Privacy and compliance: jurisdiction-aware consent flows, biometric consent with audit trail, data export, account deletion with full erasure
 
 ### Phase 2: Camera Capture and Image Upload
