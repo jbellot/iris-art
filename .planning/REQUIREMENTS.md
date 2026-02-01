@@ -136,9 +136,11 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PRIV-04 | Phase 1 | Pending |
 | PRIV-05 | Phase 1 | Pending |
 | PRIV-06 | Phase 1 | Pending |
+| INFR-01 | Phase 1 | Pending |
+| INFR-02 | Phase 1 | Pending |
+| INFR-03 | Phase 1 | Pending |
+| INFR-04 | Phase 1 | Pending |
 | CAPT-01 | Phase 2 | Pending |
-| CAPT-02 | Phase 4 | Pending |
-| CAPT-03 | Phase 4 | Pending |
 | CAPT-04 | Phase 2 | Pending |
 | CAPT-05 | Phase 2 | Pending |
 | CAPT-06 | Phase 2 | Pending |
@@ -148,6 +150,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | AIPL-04 | Phase 3 | Pending |
 | AIPL-05 | Phase 3 | Pending |
 | AIPL-06 | Phase 3 | Pending |
+| CAPT-02 | Phase 4 | Pending |
+| CAPT-03 | Phase 4 | Pending |
 | STYL-01 | Phase 4 | Pending |
 | STYL-02 | Phase 4 | Pending |
 | STYL-03 | Phase 4 | Pending |
@@ -166,18 +170,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | PAYS-03 | Phase 6 | Pending |
 | PAYS-04 | Phase 6 | Pending |
 | PAYS-05 | Phase 6 | Pending |
-| INFR-01 | Phase 1 | Pending |
-| INFR-02 | Phase 1 | Pending |
-| INFR-03 | Phase 1 | Pending |
-| INFR-04 | Phase 1 | Pending |
 | INFR-05 | Phase 7 | Pending |
 | INFR-06 | Phase 7 | Pending |
 
 **Coverage:**
-- v1 requirements: 47 total
-- Mapped to phases: 47
+- v1 requirements: 49 total (8 categories)
+- Mapped to phases: 49
 - Unmapped: 0
 
 ---
 *Requirements defined: 2026-02-01*
-*Last updated: 2026-02-01 after research synthesis*
+*Last updated: 2026-02-01 after roadmap creation*
