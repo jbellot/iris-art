@@ -123,23 +123,23 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| AUTH-01 | Phase 1 | Pending |
-| AUTH-02 | Phase 1 | Pending |
-| AUTH-03 | Phase 1 | Pending |
-| AUTH-04 | Phase 1 | Pending |
-| AUTH-05 | Phase 1 | Pending |
-| AUTH-06 | Phase 1 | Pending |
-| AUTH-07 | Phase 1 | Pending |
-| PRIV-01 | Phase 1 | Pending |
-| PRIV-02 | Phase 1 | Pending |
+| AUTH-01 | Phase 1 | Complete |
+| AUTH-02 | Phase 1 | Complete |
+| AUTH-03 | Phase 1 | Complete |
+| AUTH-04 | Phase 1 | Complete |
+| AUTH-05 | Phase 1 | Complete |
+| AUTH-06 | Phase 1 | Complete |
+| AUTH-07 | Phase 1 | Complete |
+| PRIV-01 | Phase 1 | Complete |
+| PRIV-02 | Phase 1 | Complete |
 | PRIV-03 | Phase 1 | Pending |
-| PRIV-04 | Phase 1 | Pending |
-| PRIV-05 | Phase 1 | Pending |
+| PRIV-04 | Phase 1 | Complete |
+| PRIV-05 | Phase 1 | Complete |
 | PRIV-06 | Phase 1 | Pending |
-| INFR-01 | Phase 1 | Pending |
-| INFR-02 | Phase 1 | Pending |
-| INFR-03 | Phase 1 | Pending |
-| INFR-04 | Phase 1 | Pending |
+| INFR-01 | Phase 1 | Complete |
+| INFR-02 | Phase 1 | Complete |
+| INFR-03 | Phase 1 | Complete |
+| INFR-04 | Phase 1 | Complete |
 | CAPT-01 | Phase 2 | Pending |
 | CAPT-04 | Phase 2 | Pending |
 | CAPT-05 | Phase 2 | Pending |
