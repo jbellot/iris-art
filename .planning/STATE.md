@@ -5,33 +5,34 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Any user can capture a beautiful iris photo with their phone and turn it into personalized art
-**Current focus:** Phase 1 - Foundation and Privacy Architecture
+**Current focus:** Phase 2 - Camera Capture and Image Upload
 
 ## Current Position
 
-Phase: 1 of 7 (Foundation and Privacy Architecture)
-Plan: 3 of 3 in current phase
-Status: Phase complete ✅
-Last activity: 2026-02-01 -- Completed 01-03-PLAN.md (Privacy Compliance)
+Phase: 2 of 7 (Camera Capture and Image Upload)
+Plan: 1 of 4 in current phase
+Status: In progress
+Last activity: 2026-02-01 -- Completed 02-01-PLAN.md (Mobile Foundation and Photo API)
 
-Progress: [███░░░░░░░] 16%
+Progress: [███░░░░░░░] 21%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 3
-- Average duration: 34 min
-- Total execution time: 1.75 hours
+- Total plans completed: 4
+- Average duration: 38 min
+- Total execution time: 2.6 hours
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
 | 1 | 3/3 ✅ | 102 min | 34 min |
+| 2 | 1/4 | 51 min | 51 min |
 
 **Recent Trend:**
-- Last 5 plans: 13 min, 50 min, 39 min
-- Trend: Consistent execution time around 30-50 minutes per plan
+- Last 5 plans: 50 min, 39 min, 51 min
+- Trend: Stable execution time around 40-50 minutes per plan
 
 *Updated after each plan completion*
 
@@ -56,6 +57,10 @@ Recent decisions affecting current work:
 - [01-03]: Preserve consent records on withdrawal (audit trail required)
 - [01-03]: Celery async data export with Redis result storage
 - [01-03]: Optional S3 SSE for MinIO compatibility (disabled in dev)
+- [02-01]: Presigned URLs for direct S3 upload (avoids streaming through backend)
+- [02-01]: Biometric consent shown informational during onboarding, actual grant on first camera access
+- [02-01]: JWT refresh interceptor with request queuing during token refresh
+- [02-01]: Encrypted token storage using react-native-encrypted-storage
 
 ### Pending Todos
 
@@ -67,6 +72,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01T17:35:28Z
-Stopped at: Completed 01-03-PLAN.md (Privacy Compliance) - Phase 1 complete ✅
+Last session: 2026-02-01T21:01:43Z
+Stopped at: Completed 02-01-PLAN.md (Mobile Foundation and Photo API)
 Resume file: None
