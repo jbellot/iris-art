@@ -21,7 +21,9 @@ export type MainStackParamList = {
   Gallery: undefined;
   Camera: undefined;
   PhotoReview: {
-    photoUri: string;
+    photoPath: string;
+    photoWidth: number;
+    photoHeight: number;
   };
   PhotoDetail: {
     photoId: string;
