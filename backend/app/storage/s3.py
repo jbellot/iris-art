@@ -33,16 +33,28 @@ class S3Client:
             self.client.create_bucket(Bucket=bucket)
 
     def upload_file(
-        self, key: str, data: bytes, content_type: str = "application/octet-stream"
+        self, key: str, data: bytes, content_type: str = "application/octet-stream", server_side_encryption: bool = True
     ) -> None:
-        """Upload file with server-side encryption."""
-        self.client.put_object(
-            Bucket=self.bucket_name,
-            Key=key,
-            Body=data,
-            ContentType=content_type,
-            ServerSideEncryption="AES256",
-        )
+        """Upload file with optional server-side encryption.
+
+        Args:
+            key: S3 object key
+            data: File data bytes
+            content_type: MIME type
+            server_side_encryption: Enable SSE-S3 (disable for MinIO without KMS)
+        """
+        put_args = {
+            "Bucket": self.bucket_name,
+            "Key": key,
+            "Body": data,
+            "ContentType": content_type,
+        }
+
+        # Only add ServerSideEncryption if enabled (MinIO without KMS doesn't support it)
+        if server_side_encryption:
+            put_args["ServerSideEncryption"] = "AES256"
+
+        self.client.put_object(**put_args)
 
     def download_file(self, key: str) -> bytes:
         """Download file from storage."""

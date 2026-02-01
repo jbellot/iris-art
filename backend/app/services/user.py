@@ -211,6 +211,7 @@ async def export_user_data(
             key=export_key,
             data=zip_buffer.getvalue(),
             content_type="application/zip",
+            server_side_encryption=False,  # Disable for MinIO without KMS
         )
 
         # Step 7: Generate presigned URL for ZIP download (24 hours)
