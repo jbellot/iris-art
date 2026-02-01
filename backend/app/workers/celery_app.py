@@ -21,10 +21,8 @@ celery_app.conf.update(
     task_track_started=True,
     task_time_limit=30 * 60,  # 30 minutes
     task_soft_time_limit=25 * 60,  # 25 minutes
-    task_routes={
-        "app.workers.tasks.email.*": {"queue": "email"},
-        "app.workers.tasks.export.*": {"queue": "export"},
-    },
+    # Note: Queue routing disabled for simplicity - all tasks use default queue
+    # Can be re-enabled later when needed for task prioritization
 )
 
 # Auto-discover tasks
