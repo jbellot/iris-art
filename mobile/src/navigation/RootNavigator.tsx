@@ -20,6 +20,7 @@ import RegisterScreen from '../screens/Auth/RegisterScreen';
 // Main app screens
 import GalleryScreen from '../screens/Gallery/GalleryScreen';
 import CameraScreen from '../screens/Camera/CameraScreen';
+import PhotoReviewScreen from '../screens/Camera/PhotoReviewScreen';
 
 import {
   OnboardingStackParamList,
@@ -76,6 +77,11 @@ function MainNavigator() {
       <MainStack.Screen
         name="Camera"
         component={CameraScreen}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="PhotoReview"
+        component={PhotoReviewScreen}
         options={{ headerShown: false }}
       />
     </MainStack.Navigator>
