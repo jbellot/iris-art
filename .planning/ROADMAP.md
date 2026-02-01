@@ -51,8 +51,8 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- App scaffold and backend photo API: React Native project setup, navigation, auth integration, onboarding flow, backend Photo model and upload/gallery endpoints
-- [ ] 02-02-PLAN.md -- Camera capture and upload pipeline: Vision Camera viewfinder with iris guide overlay, camera controls, photo review screen, S3 upload with progress and retry
+- [x] 02-01-PLAN.md -- App scaffold and backend photo API: React Native project setup, navigation, auth integration, onboarding flow, backend Photo model and upload/gallery endpoints
+- [x] 02-02-PLAN.md -- Camera capture and upload pipeline: Vision Camera viewfinder with iris guide overlay, camera controls, photo review screen, S3 upload with progress and retry
 - [ ] 02-03-PLAN.md -- Gallery and device testing: masonry gallery with FlashList, upload progress on thumbnails, photo detail with zoom, device validation on iOS and Android
 
 ### Phase 3: AI Processing Pipeline
