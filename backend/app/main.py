@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 
 from app import __version__
-from app.api.routes import auth, health, privacy, users
+from app.api.routes import auth, health, photos, privacy, users
 from app.core.config import settings
 from app.core.db import engine
 
@@ -46,3 +46,4 @@ app.include_router(health.router)
 app.include_router(auth.router)
 app.include_router(privacy.router)
 app.include_router(users.router)
+app.include_router(photos.router)

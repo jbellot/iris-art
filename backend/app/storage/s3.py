@@ -82,10 +82,25 @@ class S3Client:
     def generate_presigned_url(
         self, key: str, expiry: int = 3600
     ) -> str:
-        """Generate a presigned URL for temporary access."""
+        """Generate a presigned URL for temporary access (GET)."""
         url = self.client.generate_presigned_url(
             "get_object",
             Params={"Bucket": self.bucket_name, "Key": key},
+            ExpiresIn=expiry,
+        )
+        return url
+
+    def generate_presigned_put_url(
+        self, key: str, content_type: str = "image/jpeg", expiry: int = 3600
+    ) -> str:
+        """Generate a presigned URL for direct upload (PUT)."""
+        url = self.client.generate_presigned_url(
+            "put_object",
+            Params={
+                "Bucket": self.bucket_name,
+                "Key": key,
+                "ContentType": content_type,
+            },
             ExpiresIn=expiry,
         )
         return url
