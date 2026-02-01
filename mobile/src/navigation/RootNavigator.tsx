@@ -19,6 +19,7 @@ import RegisterScreen from '../screens/Auth/RegisterScreen';
 
 // Main app screens
 import GalleryScreen from '../screens/Gallery/GalleryScreen';
+import PhotoDetailScreen from '../screens/Gallery/PhotoDetailScreen';
 import CameraScreen from '../screens/Camera/CameraScreen';
 import PhotoReviewScreen from '../screens/Camera/PhotoReviewScreen';
 
@@ -73,6 +74,11 @@ function MainNavigator() {
         name="Gallery"
         component={GalleryScreen}
         options={{ title: 'IrisArt' }}
+      />
+      <MainStack.Screen
+        name="PhotoDetail"
+        component={PhotoDetailScreen}
+        options={{ headerShown: false }}
       />
       <MainStack.Screen
         name="Camera"
