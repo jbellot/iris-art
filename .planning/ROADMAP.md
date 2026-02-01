@@ -48,12 +48,12 @@ Plans:
   2. Captured photo uploads to cloud storage with a visible progress indicator
   3. User can view a gallery of all their previously captured iris photos
   4. Camera permission dialog clearly states the purpose of iris capture
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: React Native app scaffold -- project setup, navigation, auth integration, basic screens
-- [ ] 02-02: Camera capture and upload -- Vision Camera integration, photo capture, compression, S3 upload with progress
-- [ ] 02-03: Gallery and device testing -- gallery view, image loading, cross-device validation on target device matrix
+- [ ] 02-01-PLAN.md -- App scaffold and backend photo API: React Native project setup, navigation, auth integration, onboarding flow, backend Photo model and upload/gallery endpoints
+- [ ] 02-02-PLAN.md -- Camera capture and upload pipeline: Vision Camera viewfinder with iris guide overlay, camera controls, photo review screen, S3 upload with progress and retry
+- [ ] 02-03-PLAN.md -- Gallery and device testing: masonry gallery with FlashList, upload progress on thumbnails, photo detail with zoom, device validation on iOS and Android
 
 ### Phase 3: AI Processing Pipeline
 **Goal**: The app can take a captured iris photo and automatically extract the iris, remove reflections, and enhance quality -- delivering visible results back to the user with real-time progress
@@ -143,7 +143,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation and Privacy Architecture | 3/3 | Complete ✅ | 2026-02-01 |
-| 2. Camera Capture and Image Upload | 0/3 | Not started | - |
+| 2. Camera Capture and Image Upload | 0/3 | Planned | - |
 | 3. AI Processing Pipeline | 0/3 | Not started | - |
 | 4. Camera Guidance and Artistic Styles | 0/3 | Not started | - |
 | 5. Social Features (Circles and Fusion) | 0/3 | Not started | - |
