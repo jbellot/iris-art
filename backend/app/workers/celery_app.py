@@ -1,6 +1,7 @@
 """Celery application configuration."""
 
 from celery import Celery
+from kombu import Queue
 
 from app.core.config import settings
 
@@ -11,7 +12,7 @@ celery_app = Celery(
     backend=settings.CELERY_RESULT_BACKEND,
 )
 
-# Configure Celery
+# Configure Celery with priority queues
 celery_app.conf.update(
     task_serializer="json",
     accept_content=["json"],
@@ -21,8 +22,15 @@ celery_app.conf.update(
     task_track_started=True,
     task_time_limit=30 * 60,  # 30 minutes
     task_soft_time_limit=25 * 60,  # 25 minutes
-    # Note: Queue routing disabled for simplicity - all tasks use default queue
-    # Can be re-enabled later when needed for task prioritization
+    # Priority queue configuration
+    task_queues=(
+        Queue("high_priority", routing_key="high"),
+        Queue("default", routing_key="default"),
+    ),
+    task_routes={
+        "app.workers.tasks.processing.process_iris_pipeline": {"queue": "high_priority"},
+    },
+    task_default_queue="default",
 )
 
 # Auto-discover tasks

@@ -64,9 +64,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: celery -A app.workers.celery_app worker --loglevel=info
+    command: celery -A app.workers.celery_app worker -Q high_priority,default --loglevel=info --prefetch-multiplier=1
     volumes:
       - ./app:/code/app
+      - ./app/workers/models/weights:/code/app/workers/models/weights
     env_file:
       - .env
     depends_on:
