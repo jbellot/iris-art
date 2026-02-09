@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Any user can capture a beautiful iris photo with their phone and turn it into personalized art
-**Current focus:** Phase 2 - Camera Capture and Image Upload
+**Current focus:** Phase 3 - AI Processing Pipeline
 
 ## Current Position
 
-Phase: 2 of 7 (Camera Capture and Image Upload)
-Plan: 3 of 3 in current phase
-Status: Phase complete (checkpoint pending device verification)
-Last activity: 2026-02-01 -- Completed 02-03-PLAN.md (Gallery Photo Display)
+Phase: 3 of 7 (AI Processing Pipeline)
+Plan: 1 of 1 in current phase
+Status: Phase complete
+Last activity: 2026-02-09 -- Completed 03-01-PLAN.md (AI Processing Infrastructure)
 
-Progress: [████░░░░░░] 33%
+Progress: [████░░░░░░] 43%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 6
-- Average duration: 27 min
-- Total execution time: 2.7 hours
+- Total plans completed: 7
+- Average duration: 24 min
+- Total execution time: 2.8 hours
 
 **By Phase:**
 
@@ -29,10 +29,11 @@ Progress: [████░░░░░░] 33%
 |-------|-------|-------|----------|
 | 1 | 3/3 | 102 min | 34 min |
 | 2 | 3/3 | 61 min | 20 min |
+| 3 | 1/1 | 8 min | 8 min |
 
 **Recent Trend:**
-- Last 5 plans: 34 min, 51 min, 5 min, 5 min
-- Trend: Plans 02-02 and 02-03 highly efficient due to clear specifications
+- Last 5 plans: 51 min, 5 min, 5 min, 8 min
+- Trend: Phase 3 Plan 01 highly efficient (well-scoped backend-only work)
 
 *Updated after each plan completion*
 
@@ -69,6 +70,14 @@ Recent decisions affecting current work:
 - [02-03]: FlashList 2-column layout with variable-height items for masonry effect
 - [02-03]: Active uploads prepended to API photos with local file:// URIs
 - [02-03]: FastImage immutable caching for uploaded photos
+- [03-01]: Sync SQLAlchemy session for Celery workers (psycopg2 with lazy loading)
+- [03-01]: Dev-mode fallbacks: simulated segmentation mask, OpenCV Lanczos enhancement
+- [03-01]: MVP reflection removal uses OpenCV inpainting (upgradeable to LapCAT)
+- [03-01]: Singleton ModelCache with lazy loading prevents repeated model loads
+- [03-01]: Priority queues for Celery (high_priority for user jobs, default for background)
+- [03-01]: Auto-retry once on transient errors with exponential backoff
+- [03-01]: Error classification: quality_issue, transient_error, server_error
+- [03-01]: Celery prefetch-multiplier=1 prevents AI task queue buildup
 
 ### Pending Todos
 
@@ -80,6 +89,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-02-01T21:36:21Z
-Stopped at: Completed 02-03-PLAN.md (Gallery Photo Display) - device verification checkpoint pending
+Last session: 2026-02-09T16:11:19Z
+Stopped at: Completed 03-01-PLAN.md (AI Processing Infrastructure)
 Resume file: None
