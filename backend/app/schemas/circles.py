@@ -69,3 +69,17 @@ class InviteInfoResponse(BaseModel):
     circle_id: UUID
     circle_name: str
     inviter_email: str
+
+
+class SharedGalleryItemResponse(BaseModel):
+    """Shared gallery item response."""
+
+    id: UUID
+    thumbnail_url: str
+    owner_user_id: UUID
+    owner_email: str
+    created_at: datetime
+    style_job_count: int
+    has_styled_versions: bool
+
+    model_config = {"from_attributes": True}

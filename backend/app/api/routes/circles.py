@@ -14,6 +14,7 @@ from app.schemas.circles import (
     CircleDetailResponse,
     CircleMemberResponse,
     CircleResponse,
+    SharedGalleryItemResponse,
 )
 from app.services import circle_service
 
@@ -101,3 +102,18 @@ async def remove_member(
 ):
     """Remove a member from a circle (owner only)."""
     await circle_service.remove_member(circle_id, current_user.id, user_id, db)
+
+
+@router.get("/{circle_id}/gallery", response_model=List[SharedGalleryItemResponse])
+async def get_shared_gallery(
+    circle_id: UUID,
+    offset: int = 0,
+    limit: int = 20,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_session),
+):
+    """Get shared gallery showing artwork from all active circle members."""
+    gallery_items = await circle_service.get_shared_gallery(
+        circle_id, current_user.id, db, offset, limit
+    )
+    return [SharedGalleryItemResponse(**item) for item in gallery_items]

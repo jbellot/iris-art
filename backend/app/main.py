@@ -11,6 +11,7 @@ from app import __version__
 from app.api.routes import (
     auth,
     circles,
+    consent,
     exports,
     health,
     invites,
@@ -64,4 +65,5 @@ app.include_router(styles.router)
 app.include_router(exports.router)
 app.include_router(circles.router)
 app.include_router(invites.router)
+app.include_router(consent.router)
 app.include_router(websocket.router)

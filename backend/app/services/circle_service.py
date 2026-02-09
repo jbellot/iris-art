@@ -11,7 +11,10 @@ from sqlalchemy.orm import selectinload
 
 from app.models.circle import Circle
 from app.models.circle_membership import CircleMembership
+from app.models.photo import Photo
+from app.models.style_job import StyleJob, StyleJobStatus
 from app.models.user import User
+from app.storage.s3 import S3Client
 
 
 async def create_circle(name: str, user_id: uuid.UUID, db: AsyncSession) -> Circle:
@@ -346,3 +349,93 @@ async def verify_active_membership(
         )
 
     return membership
+
+
+async def get_shared_gallery(
+    circle_id: uuid.UUID,
+    user_id: uuid.UUID,
+    db: AsyncSession,
+    offset: int = 0,
+    limit: int = 20,
+) -> List[dict]:
+    """Get shared gallery for a circle showing all active members' artwork.
+
+    Args:
+        circle_id: ID of the circle
+        user_id: ID of the user requesting
+        db: Database session
+        offset: Pagination offset
+        limit: Pagination limit
+
+    Returns:
+        List of artwork dicts with presigned URLs and owner info
+
+    Raises:
+        HTTPException: If user is not an active member
+    """
+    # Verify active membership
+    await verify_active_membership(circle_id, user_id, db)
+
+    # Get all active member user IDs
+    members_result = await db.execute(
+        select(CircleMembership.user_id)
+        .where(
+            and_(
+                CircleMembership.circle_id == circle_id,
+                CircleMembership.left_at.is_(None)
+            )
+        )
+    )
+    member_ids = [row[0] for row in members_result]
+
+    if not member_ids:
+        return []
+
+    # Query photos from active members with processed status
+    photos_result = await db.execute(
+        select(Photo, User.email)
+        .join(User, Photo.user_id == User.id)
+        .where(
+            and_(
+                Photo.user_id.in_(member_ids),
+                Photo.upload_status == "processed"
+            )
+        )
+        .order_by(Photo.created_at.desc())
+        .offset(offset)
+        .limit(limit)
+    )
+
+    s3_client = S3Client()
+    gallery_items = []
+
+    for photo, owner_email in photos_result:
+        # Get completed style jobs for this photo
+        style_jobs_result = await db.execute(
+            select(StyleJob)
+            .where(
+                and_(
+                    StyleJob.photo_id == photo.id,
+                    StyleJob.status == StyleJobStatus.COMPLETED
+                )
+            )
+            .order_by(StyleJob.created_at.desc())
+        )
+        style_jobs = style_jobs_result.scalars().all()
+
+        # Generate presigned URL for thumbnail
+        thumbnail_url = s3_client.generate_presigned_url(
+            photo.thumbnail_s3_key or photo.s3_key, expiry=3600
+        )
+
+        gallery_items.append({
+            "id": photo.id,
+            "thumbnail_url": thumbnail_url,
+            "owner_user_id": photo.user_id,
+            "owner_email": owner_email,
+            "created_at": photo.created_at,
+            "style_job_count": len(style_jobs),
+            "has_styled_versions": len(style_jobs) > 0,
+        })
+
+    return gallery_items
