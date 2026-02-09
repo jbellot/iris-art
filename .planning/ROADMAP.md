@@ -98,12 +98,15 @@ Plans:
   3. User can blend two or more irises into a fused composition, and compose irises side-by-side in combined artwork
   4. Circle members must give explicit consent before their iris art is used in fusion or compositions
   5. User can leave a circle and their content is removed from the shared gallery
-**Plans**: 3 plans
+**Plans**: 6 plans
 
 Plans:
-- [ ] 05-01-PLAN.md -- Circles CRUD and invitations: Circle/CircleMembership models, invite token system (itsdangerous), circle management API, mobile circle screens with deep link navigation
-- [ ] 05-02-PLAN.md -- Shared galleries and consent: ArtworkConsent model, shared gallery API, consent request/grant/deny/revoke flow, mobile gallery with owner badges and consent modal
-- [ ] 05-03-PLAN.md -- Iris fusion and composition: FusionArtwork model, Poisson blending Celery task with alpha fallback, side-by-side composition (hconcat/vconcat), consent gate, mobile builder and result screens
+- [ ] 05-01-PLAN.md -- Circles backend: Circle/CircleMembership models, invite token system (itsdangerous), circle management API, Alembic migration
+- [ ] 05-02-PLAN.md -- Circles mobile: circle screens (list, create, detail, invite, join), navigation, Zustand store, deep link config
+- [ ] 05-03-PLAN.md -- Shared gallery and consent backend: ArtworkConsent model, shared gallery API, consent service (request/grant/deny/revoke/check)
+- [ ] 05-04-PLAN.md -- Shared gallery and consent mobile: SharedGalleryScreen, ArtworkCard, ConsentModal, gallery hook, consent service
+- [ ] 05-05-PLAN.md -- Fusion and composition backend: FusionArtwork model, Poisson blending Celery task with alpha fallback, composition task (hconcat/vconcat), consent gate, fusion API
+- [ ] 05-06-PLAN.md -- Fusion and composition mobile: FusionBuilder, CompositionBuilder, FusionResult screens, progress hook, SharedGallery wiring
 
 ### Phase 6: Payments and Freemium
 **Goal**: The app monetizes through gated premium features -- users can purchase HD exports, unlock premium styles, and free users are rate-limited
@@ -146,7 +149,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 2. Camera Capture and Image Upload | 3/3 | Complete | 2026-02-01 |
 | 3. AI Processing Pipeline | 3/3 | Complete ✅ | 2026-02-09 |
 | 4. Camera Guidance and Artistic Styles | 3/3 | Complete ✅ | 2026-02-09 |
-| 5. Social Features (Circles and Fusion) | 0/3 | Not started | - |
+| 5. Social Features (Circles and Fusion) | 0/6 | Not started | - |
 | 6. Payments and Freemium | 0/2 | Not started | - |
 | 7. Polish and Production Readiness | 0/2 | Not started | - |
 
