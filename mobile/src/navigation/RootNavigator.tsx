@@ -2,7 +2,7 @@
  * Root navigator with conditional navigation based on app state
  */
 import React, { useEffect } from 'react';
-import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuthStore } from '../store/authStore';
@@ -27,6 +27,9 @@ import {StyleGalleryScreen} from '../screens/Styles/StyleGalleryScreen';
 import {StylePreviewScreen} from '../screens/Styles/StylePreviewScreen';
 import {AIGenerateScreen} from '../screens/Styles/AIGenerateScreen';
 import {HDExportScreen} from '../screens/Exports/HDExportScreen';
+
+// Circles navigator
+import CirclesNavigator from './CirclesNavigator';
 
 import {
   OnboardingStackParamList,
@@ -78,7 +81,18 @@ function MainNavigator() {
       <MainStack.Screen
         name="Gallery"
         component={GalleryScreen}
-        options={{ title: 'IrisArt' }}
+        options={({ navigation }) => ({
+          title: 'IrisArt',
+          headerRight: () => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Circles' as any, { screen: 'CirclesList' })}
+              style={{ marginRight: 16 }}>
+              <Text style={{ color: '#007AFF', fontSize: 16, fontWeight: '600' }}>
+                Circles
+              </Text>
+            </TouchableOpacity>
+          ),
+        })}
       />
       <MainStack.Screen
         name="PhotoDetail"
@@ -148,8 +162,43 @@ export default function RootNavigator() {
     );
   }
 
+  // Deep linking configuration
+  const linking = {
+    prefixes: ['irisvue://', 'https://irisvue.app', 'https://app.irisvue.app'],
+    config: {
+      screens: {
+        Onboarding: {
+          screens: {
+            Welcome: 'welcome',
+            PrePermission: 'permissions',
+            BiometricConsent: 'consent',
+          },
+        },
+        Auth: {
+          screens: {
+            Login: 'login',
+            Register: 'register',
+          },
+        },
+        Main: {
+          screens: {
+            Gallery: 'gallery',
+            Camera: 'camera',
+          },
+        },
+        Circles: {
+          screens: {
+            CirclesList: 'circles',
+            JoinCircle: 'invite/:token',
+            CircleDetail: 'circles/:circleId',
+          },
+        },
+      },
+    },
+  };
+
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <RootStack.Navigator screenOptions={{ headerShown: false }}>
         {/* Show onboarding if first launch and not completed */}
         {isFirstLaunch && !onboardingComplete ? (
@@ -159,7 +208,10 @@ export default function RootNavigator() {
           <RootStack.Screen name="Auth" component={AuthNavigator} />
         ) : (
           /* Show main app if authenticated */
-          <RootStack.Screen name="Main" component={MainNavigator} />
+          <>
+            <RootStack.Screen name="Main" component={MainNavigator} />
+            <RootStack.Screen name="Circles" component={CirclesNavigator} />
+          </>
         )}
       </RootStack.Navigator>
     </NavigationContainer>

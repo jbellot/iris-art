@@ -55,9 +55,40 @@ export type MainStackParamList = {
   };
 };
 
+// Circles Stack
+export type CirclesStackParamList = {
+  CirclesList: undefined;
+  CreateCircle: undefined;
+  CircleDetail: {
+    circleId: string;
+  };
+  Invite: {
+    circleId: string;
+  };
+  JoinCircle: {
+    token: string;
+  };
+  // Placeholder screens for future plans (05-04, 05-06)
+  SharedGallery: {
+    circleId: string;
+  };
+  FusionBuilder: {
+    artworkIds: string[];
+    circleId: string;
+  };
+  CompositionBuilder: {
+    artworkIds: string[];
+    circleId: string;
+  };
+  FusionResult: {
+    fusionId: string;
+  };
+};
+
 // Root Stack
 export type RootStackParamList = {
   Onboarding: NavigatorScreenParams<OnboardingStackParamList>;
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Main: NavigatorScreenParams<MainStackParamList>;
+  Circles: NavigatorScreenParams<CirclesStackParamList>;
 };
