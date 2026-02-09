@@ -64,12 +64,12 @@ Plans:
   2. User sees real-time progress updates during AI processing (not a static spinner)
   3. If processing fails, user sees a meaningful error message and can retry the job
   4. Processing runs asynchronously -- the user can navigate the app while waiting for results
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: Iris segmentation and extraction -- U-Net/DeepLabV3+ model, ONNX Runtime inference, Celery worker integration
-- [ ] 03-02: Enhancement pipeline -- reflection removal, color correction, Real-ESRGAN upscaling, pipeline orchestration
-- [ ] 03-03: Progress and reliability -- WebSocket progress streaming, job status management, error handling, retry logic
+- [ ] 03-01-PLAN.md -- Backend AI pipeline and processing API: ProcessingJob model, AI model infrastructure (segmentation, reflection removal, enhancement), Celery pipeline tasks with priority queues, processing REST API
+- [ ] 03-02-PLAN.md -- WebSocket progress and reliability: Real-time WebSocket progress streaming with magical step names, granular error classification, retry handlers, partial cleanup on failure
+- [ ] 03-03-PLAN.md -- Mobile processing UX and results: Processing service, WebSocket hook, gallery processing badges, before/after slider result screen, save/share/reprocess actions, batch processing
 
 ### Phase 4: Camera Guidance and Artistic Styles
 **Goal**: Users get real-time AI feedback while capturing (alignment, focus, lighting) and can transform their processed iris into art using curated presets, AI-generated compositions, and HD export
