@@ -16,3 +16,11 @@ pydantic-settings
 httpx
 geoip2
 cryptography
+psycopg2-binary
+torch>=2.0.0
+torchvision>=0.19.0
+onnxruntime>=1.20.0
+opencv-python-headless>=4.10.0
+Pillow>=11.0
+numpy>=2.0
+scikit-image>=0.24.0

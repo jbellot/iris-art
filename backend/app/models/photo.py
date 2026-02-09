@@ -2,7 +2,7 @@
 
 import uuid
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 from sqlalchemy import BigInteger, DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
@@ -55,6 +55,9 @@ class Photo(Base):
 
     # Relationships
     user: Mapped["User"] = relationship("User", back_populates="photos")
+    processing_jobs: Mapped[List["ProcessingJob"]] = relationship(
+        "ProcessingJob", back_populates="photo", cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
         return f"<Photo(id={self.id}, user_id={self.user_id}, status={self.upload_status})>"
