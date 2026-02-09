@@ -43,6 +43,16 @@ export type MainStackParamList = {
     processingJobId?: string;
     originalImageUrl: string;
   };
+  AIGenerate: {
+    photoId: string;
+    processingJobId: string;
+    originalImageUrl: string;
+  };
+  HDExport: {
+    sourceType: 'styled' | 'ai_generated' | 'processed';
+    sourceJobId: string;
+    previewImageUrl: string;
+  };
 };
 
 // Root Stack

@@ -105,6 +105,35 @@ export function StylePreviewScreen() {
     setJobSubmitted(false);
   };
 
+  const handleExportHD = () => {
+    if (!activeJob?.id || !activeJob.resultUrl) {
+      Alert.alert('Not Ready', 'Please wait for styling to complete.');
+      return;
+    }
+
+    navigation.navigate('HDExport', {
+      sourceType: 'styled',
+      sourceJobId: activeJob.id,
+      previewImageUrl: activeJob.resultUrl,
+    });
+  };
+
+  const handleGenerateAI = () => {
+    if (!processingJobId) {
+      Alert.alert(
+        'Not Available',
+        'AI generation requires a processed iris image.',
+      );
+      return;
+    }
+
+    navigation.navigate('AIGenerate', {
+      photoId,
+      processingJobId,
+      originalImageUrl,
+    });
+  };
+
   // Error state
   if (activeJob?.status === 'failed') {
     return (
@@ -181,46 +210,74 @@ export function StylePreviewScreen() {
       </View>
 
       {/* Actions bar */}
-      <View style={styles.actions}>
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={handleTryAnother}>
-          <Text style={styles.actionButtonText}>Try Another Style</Text>
-        </TouchableOpacity>
+      <View style={styles.actionsContainer}>
+        {/* Primary actions row */}
+        <View style={styles.actions}>
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={handleTryAnother}>
+            <Text style={styles.actionButtonText}>Try Another</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.actionButton,
-            styles.primaryButton,
-            !activeJob?.resultUrl && styles.disabledButton,
-          ]}
-          onPress={handleSave}
-          disabled={!activeJob?.resultUrl}>
-          <Text
+          <TouchableOpacity
             style={[
-              styles.actionButtonText,
-              styles.primaryButtonText,
-              !activeJob?.resultUrl && styles.disabledButtonText,
-            ]}>
-            Save
-          </Text>
-        </TouchableOpacity>
+              styles.actionButton,
+              !activeJob?.resultUrl && styles.disabledButton,
+            ]}
+            onPress={handleExportHD}
+            disabled={!activeJob?.resultUrl}>
+            <Text
+              style={[
+                styles.actionButtonText,
+                !activeJob?.resultUrl && styles.disabledButtonText,
+              ]}>
+              Export HD
+            </Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            styles.actionButton,
-            !activeJob?.resultUrl && styles.disabledButton,
-          ]}
-          onPress={handleShare}
-          disabled={!activeJob?.resultUrl}>
-          <Text
+          <TouchableOpacity
             style={[
-              styles.actionButtonText,
-              !activeJob?.resultUrl && styles.disabledButtonText,
-            ]}>
-            Share
-          </Text>
-        </TouchableOpacity>
+              styles.actionButton,
+              styles.primaryButton,
+              !activeJob?.resultUrl && styles.disabledButton,
+            ]}
+            onPress={handleSave}
+            disabled={!activeJob?.resultUrl}>
+            <Text
+              style={[
+                styles.actionButtonText,
+                styles.primaryButtonText,
+                !activeJob?.resultUrl && styles.disabledButtonText,
+              ]}>
+              Save
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Secondary actions row */}
+        <View style={styles.actions}>
+          <TouchableOpacity
+            style={[styles.actionButton, styles.secondaryButton]}
+            onPress={handleGenerateAI}>
+            <Text style={styles.actionButtonText}>Generate AI Art</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[
+              styles.actionButton,
+              !activeJob?.resultUrl && styles.disabledButton,
+            ]}
+            onPress={handleShare}
+            disabled={!activeJob?.resultUrl}>
+            <Text
+              style={[
+                styles.actionButtonText,
+                !activeJob?.resultUrl && styles.disabledButtonText,
+              ]}>
+              Share
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -284,12 +341,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  actions: {
-    flexDirection: 'row',
-    padding: 16,
-    gap: 12,
+  actionsContainer: {
     borderTopWidth: 1,
     borderTopColor: '#2A2A2A',
+    padding: 16,
+    gap: 8,
+  },
+  actions: {
+    flexDirection: 'row',
+    gap: 12,
   },
   actionButton: {
     flex: 1,
@@ -301,6 +361,9 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     backgroundColor: '#6200EA',
+  },
+  secondaryButton: {
+    backgroundColor: '#7C3AED',
   },
   disabledButton: {
     backgroundColor: '#1E1E1E',

@@ -12,9 +12,11 @@ interface JobProgressResult {
   status: string;
   result: {
     result_url?: string;
+    preview_url?: string;
     processing_time_ms?: number;
     result_width?: number;
     result_height?: number;
+    file_size_bytes?: number;
   } | null;
   error: {
     error_type?: string;

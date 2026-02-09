@@ -25,6 +25,8 @@ import PhotoReviewScreen from '../screens/Camera/PhotoReviewScreen';
 import ProcessingResultScreen from '../screens/Processing/ProcessingResultScreen';
 import {StyleGalleryScreen} from '../screens/Styles/StyleGalleryScreen';
 import {StylePreviewScreen} from '../screens/Styles/StylePreviewScreen';
+import {AIGenerateScreen} from '../screens/Styles/AIGenerateScreen';
+import {HDExportScreen} from '../screens/Exports/HDExportScreen';
 
 import {
   OnboardingStackParamList,
@@ -107,6 +109,16 @@ function MainNavigator() {
         name="StylePreview"
         component={StylePreviewScreen}
         options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="AIGenerate"
+        component={AIGenerateScreen}
+        options={{ title: 'AI Art Generation' }}
+      />
+      <MainStack.Screen
+        name="HDExport"
+        component={HDExportScreen}
+        options={{ title: 'HD Export' }}
       />
     </MainStack.Navigator>
   );
