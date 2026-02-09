@@ -16,7 +16,10 @@ import { RouteProp } from '@react-navigation/native';
 import { CirclesStackParamList } from '../../navigation/types';
 import { useCircleStore } from '../../store/circleStore';
 import { getCircleDetail, getCircleMembers, leaveCircle, removeMember } from '../../services/circles';
+import { getPendingConsents } from '../../services/artworkConsent';
 import { Circle, CircleMember } from '../../types/circles';
+import ConsentModal from '../../components/Circles/ConsentModal';
+import { PendingConsent } from '../../types/consent';
 
 type Props = {
   navigation: NativeStackNavigationProp<CirclesStackParamList, 'CircleDetail'>;
@@ -28,6 +31,8 @@ export default function CircleDetailScreen({ navigation, route }: Props) {
   const [circle, setCircle] = useState<Circle | null>(null);
   const [members, setMembers] = useState<CircleMember[]>([]);
   const [loading, setLoading] = useState(true);
+  const [pendingConsents, setPendingConsents] = useState<PendingConsent[]>([]);
+  const [consentModalVisible, setConsentModalVisible] = useState(false);
   const { removeCircle: removeCircleFromStore } = useCircleStore();
 
   useEffect(() => {
@@ -37,12 +42,14 @@ export default function CircleDetailScreen({ navigation, route }: Props) {
   const loadCircleData = async () => {
     setLoading(true);
     try {
-      const [circleData, membersData] = await Promise.all([
+      const [circleData, membersData, consentsData] = await Promise.all([
         getCircleDetail(circleId),
         getCircleMembers(circleId),
+        getPendingConsents().catch(() => []), // Don't fail if consent fetch fails
       ]);
       setCircle(circleData);
       setMembers(membersData);
+      setPendingConsents(consentsData);
     } catch (error) {
       Alert.alert('Error', 'Failed to load circle data');
       navigation.goBack();
@@ -56,7 +63,23 @@ export default function CircleDetailScreen({ navigation, route }: Props) {
   };
 
   const handleSharedGalleryPress = () => {
-    Alert.alert('Coming soon', 'Shared gallery feature is coming soon!');
+    navigation.navigate('SharedGallery', { circleId });
+  };
+
+  const handleConsentRequestsPress = () => {
+    if (pendingConsents.length > 0) {
+      setConsentModalVisible(true);
+    }
+  };
+
+  const handleConsentDecisionMade = async () => {
+    // Refresh consent list after decision
+    try {
+      const consentsData = await getPendingConsents();
+      setPendingConsents(consentsData);
+    } catch (error) {
+      console.error('Failed to refresh consents:', error);
+    }
   };
 
   const handleLeaveCircle = () => {
@@ -156,13 +179,27 @@ export default function CircleDetailScreen({ navigation, route }: Props) {
     return null;
   }
 
+  const pendingConsentCount = pendingConsents.length;
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.circleName}>{circle.name}</Text>
-        <Text style={styles.memberCount}>
-          {circle.member_count} {circle.member_count === 1 ? 'member' : 'members'}
-        </Text>
+        <View style={styles.headerLeft}>
+          <Text style={styles.circleName}>{circle.name}</Text>
+          <Text style={styles.memberCount}>
+            {circle.member_count} {circle.member_count === 1 ? 'member' : 'members'}
+          </Text>
+        </View>
+
+        {/* Consent Notification Badge */}
+        {pendingConsentCount > 0 && (
+          <TouchableOpacity
+            style={styles.consentBadge}
+            onPress={handleConsentRequestsPress}>
+            <Text style={styles.consentBadgeText}>{pendingConsentCount}</Text>
+            <Text style={styles.consentBadgeLabel}>Requests</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
       <FlatList
@@ -194,6 +231,14 @@ export default function CircleDetailScreen({ navigation, route }: Props) {
           <Text style={styles.buttonText}>Leave Circle</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Consent Modal */}
+      <ConsentModal
+        visible={consentModalVisible}
+        pendingConsents={pendingConsents}
+        onClose={() => setConsentModalVisible(false)}
+        onDecisionMade={handleConsentDecisionMade}
+      />
     </View>
   );
 }
@@ -210,9 +255,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     padding: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#333',
+  },
+  headerLeft: {
+    flex: 1,
   },
   circleName: {
     fontSize: 24,
@@ -281,5 +332,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#FFF',
+  },
+  consentBadge: {
+    backgroundColor: '#DC3545',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 70,
+  },
+  consentBadgeText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#FFF',
+    marginBottom: 2,
+  },
+  consentBadgeLabel: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: '#FFF',
+    textTransform: 'uppercase',
   },
 });
