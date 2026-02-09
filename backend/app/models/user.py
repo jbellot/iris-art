@@ -40,6 +40,18 @@ class User(Base):
     consent_records: Mapped[List["ConsentRecord"]] = relationship(
         "ConsentRecord", back_populates="user", cascade="all, delete-orphan"
     )
+    consent_grants: Mapped[List["ArtworkConsent"]] = relationship(
+        "ArtworkConsent",
+        back_populates="grantor",
+        foreign_keys="[ArtworkConsent.grantor_user_id]",
+        cascade="all, delete-orphan",
+    )
+    consent_requests: Mapped[List["ArtworkConsent"]] = relationship(
+        "ArtworkConsent",
+        back_populates="grantee",
+        foreign_keys="[ArtworkConsent.grantee_user_id]",
+        cascade="all, delete-orphan",
+    )
     photos: Mapped[List["Photo"]] = relationship(
         "Photo", back_populates="user", cascade="all, delete-orphan"
     )

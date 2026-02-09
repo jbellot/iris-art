@@ -1,6 +1,7 @@
 """Database models for IrisVue."""
 
 from app.core.db import Base
+from app.models.artwork_consent import ArtworkConsent
 from app.models.circle import Circle
 from app.models.circle_membership import CircleMembership
 from app.models.consent import ConsentRecord
@@ -16,6 +17,7 @@ __all__ = [
     "Circle",
     "CircleMembership",
     "ConsentRecord",
+    "ArtworkConsent",
     "Photo",
     "ProcessingJob",
     "StylePreset",

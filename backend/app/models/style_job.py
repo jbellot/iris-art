@@ -72,7 +72,7 @@ class StyleJob(Base):
     # Relationships
     user: Mapped["User"] = relationship("User", back_populates="style_jobs")
     photo: Mapped["Photo"] = relationship("Photo", back_populates="style_jobs")
-    style_preset: Mapped["StylePreset" | None] = relationship("StylePreset")
+    style_preset: Mapped["StylePreset | None"] = relationship("StylePreset")
     processing_job: Mapped["ProcessingJob"] = relationship("ProcessingJob", back_populates="style_jobs")
 
     def __repr__(self) -> str:
