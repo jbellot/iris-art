@@ -98,12 +98,12 @@ Plans:
   3. User can blend two or more irises into a fused composition, and compose irises side-by-side in combined artwork
   4. Circle members must give explicit consent before their iris art is used in fusion or compositions
   5. User can leave a circle and their content is removed from the shared gallery
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 05-01: Circles CRUD and invitations -- circle creation, shareable invite links, member management, leave/remove
-- [ ] 05-02: Shared galleries -- cross-member gallery view, permissions, content visibility on leave
-- [ ] 05-03: Iris fusion and composition -- blend algorithm (Poisson blending), side-by-side composition, consent flow for using others' art
+- [ ] 05-01-PLAN.md -- Circles CRUD and invitations: Circle/CircleMembership models, invite token system (itsdangerous), circle management API, mobile circle screens with deep link navigation
+- [ ] 05-02-PLAN.md -- Shared galleries and consent: ArtworkConsent model, shared gallery API, consent request/grant/deny/revoke flow, mobile gallery with owner badges and consent modal
+- [ ] 05-03-PLAN.md -- Iris fusion and composition: FusionArtwork model, Poisson blending Celery task with alpha fallback, side-by-side composition (hconcat/vconcat), consent gate, mobile builder and result screens
 
 ### Phase 6: Payments and Freemium
 **Goal**: The app monetizes through gated premium features -- users can purchase HD exports, unlock premium styles, and free users are rate-limited
