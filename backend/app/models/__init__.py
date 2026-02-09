@@ -5,6 +5,7 @@ from app.models.artwork_consent import ArtworkConsent
 from app.models.circle import Circle
 from app.models.circle_membership import CircleMembership
 from app.models.consent import ConsentRecord
+from app.models.fusion_artwork import FusionArtwork
 from app.models.photo import Photo
 from app.models.processing_job import ProcessingJob
 from app.models.style_job import StyleJob
@@ -18,6 +19,7 @@ __all__ = [
     "CircleMembership",
     "ConsentRecord",
     "ArtworkConsent",
+    "FusionArtwork",
     "Photo",
     "ProcessingJob",
     "StylePreset",
