@@ -23,6 +23,8 @@ import PhotoDetailScreen from '../screens/Gallery/PhotoDetailScreen';
 import CameraScreen from '../screens/Camera/CameraScreen';
 import PhotoReviewScreen from '../screens/Camera/PhotoReviewScreen';
 import ProcessingResultScreen from '../screens/Processing/ProcessingResultScreen';
+import {StyleGalleryScreen} from '../screens/Styles/StyleGalleryScreen';
+import {StylePreviewScreen} from '../screens/Styles/StylePreviewScreen';
 
 import {
   OnboardingStackParamList,
@@ -94,6 +96,16 @@ function MainNavigator() {
       <MainStack.Screen
         name="ProcessingResult"
         component={ProcessingResultScreen}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="StyleGallery"
+        component={StyleGalleryScreen}
+        options={{ title: 'Choose Style' }}
+      />
+      <MainStack.Screen
+        name="StylePreview"
+        component={StylePreviewScreen}
         options={{ headerShown: false }}
       />
     </MainStack.Navigator>

@@ -32,6 +32,17 @@ export type MainStackParamList = {
     jobId: string;
     photoId: string;
   };
+  StyleGallery: {
+    photoId: string;
+    processingJobId?: string;
+    originalImageUrl: string;
+  };
+  StylePreview: {
+    photoId: string;
+    stylePresetId: string;
+    processingJobId?: string;
+    originalImageUrl: string;
+  };
 };
 
 // Root Stack
