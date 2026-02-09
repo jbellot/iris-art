@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Camera Capture and Image Upload** - React Native app, Vision Camera, upload pipeline, basic gallery ✅
 - [x] **Phase 3: AI Processing Pipeline** - Iris segmentation, reflection removal, enhancement, async job processing with progress ✅
 - [x] **Phase 4: Camera Guidance and Artistic Styles** - AI-guided capture overlay, preset and AI-generated styles, HD export ✅
-- [ ] **Phase 5: Social Features (Circles and Fusion)** - Named circles, invitations, shared galleries, iris fusion and composition
+- [x] **Phase 5: Social Features (Circles and Fusion)** - Named circles, invitations, shared galleries, iris fusion and composition ✅
 - [ ] **Phase 6: Payments and Freemium** - RevenueCat, in-app purchases, feature gating, rate limiting
 - [ ] **Phase 7: Polish and Production Readiness** - CI/CD, monitoring, CDN optimization, App Store submission readiness
 
@@ -98,15 +98,15 @@ Plans:
   3. User can blend two or more irises into a fused composition, and compose irises side-by-side in combined artwork
   4. Circle members must give explicit consent before their iris art is used in fusion or compositions
   5. User can leave a circle and their content is removed from the shared gallery
-**Plans**: 6 plans
+**Plans**: 6 plans (6/6 complete) ✅
 
 Plans:
-- [ ] 05-01-PLAN.md -- Circles backend: Circle/CircleMembership models, invite token system (itsdangerous), circle management API, Alembic migration
-- [ ] 05-02-PLAN.md -- Circles mobile: circle screens (list, create, detail, invite, join), navigation, Zustand store, deep link config
-- [ ] 05-03-PLAN.md -- Shared gallery and consent backend: ArtworkConsent model, shared gallery API, consent service (request/grant/deny/revoke/check)
-- [ ] 05-04-PLAN.md -- Shared gallery and consent mobile: SharedGalleryScreen, ArtworkCard, ConsentModal, gallery hook, consent service
-- [ ] 05-05-PLAN.md -- Fusion and composition backend: FusionArtwork model, Poisson blending Celery task with alpha fallback, composition task (hconcat/vconcat), consent gate, fusion API
-- [ ] 05-06-PLAN.md -- Fusion and composition mobile: FusionBuilder, CompositionBuilder, FusionResult screens, progress hook, SharedGallery wiring
+- [x] 05-01-PLAN.md -- Circles backend: Circle/CircleMembership models, invite token system (itsdangerous), circle management API, Alembic migration
+- [x] 05-02-PLAN.md -- Circles mobile: circle screens (list, create, detail, invite, join), navigation, Zustand store, deep link config
+- [x] 05-03-PLAN.md -- Shared gallery and consent backend: ArtworkConsent model, shared gallery API, consent service (request/grant/deny/revoke/check)
+- [x] 05-04-PLAN.md -- Shared gallery and consent mobile: SharedGalleryScreen, ArtworkCard, ConsentModal, gallery hook, consent service
+- [x] 05-05-PLAN.md -- Fusion and composition backend: FusionArtwork model, Poisson blending Celery task with alpha fallback, composition task (hconcat/vconcat), consent gate, fusion API
+- [x] 05-06-PLAN.md -- Fusion and composition mobile: FusionBuilder, CompositionBuilder, FusionResult screens, progress hook, SharedGallery wiring
 
 ### Phase 6: Payments and Freemium
 **Goal**: The app monetizes through gated premium features -- users can purchase HD exports, unlock premium styles, and free users are rate-limited
@@ -149,10 +149,10 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 2. Camera Capture and Image Upload | 3/3 | Complete | 2026-02-01 |
 | 3. AI Processing Pipeline | 3/3 | Complete ✅ | 2026-02-09 |
 | 4. Camera Guidance and Artistic Styles | 3/3 | Complete ✅ | 2026-02-09 |
-| 5. Social Features (Circles and Fusion) | 0/6 | Not started | - |
+| 5. Social Features (Circles and Fusion) | 6/6 | Complete ✅ | 2026-02-09 |
 | 6. Payments and Freemium | 0/2 | Not started | - |
 | 7. Polish and Production Readiness | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-01*
-*Last updated: 2026-02-09 (Phase 4 complete)*
+*Last updated: 2026-02-09 (Phase 5 complete)*
