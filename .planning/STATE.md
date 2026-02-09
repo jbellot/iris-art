@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 
 ## Current Position
 
-Phase: 4 of 7 (Camera Guidance and Artistic Styles)
-Plan: 3 of 3 in current phase
-Status: Active - Phase 4 Complete
-Last activity: 2026-02-09 -- Completed 04-03-PLAN.md (AI Art Generation and HD Export Pipeline)
+Phase: 5 of 7 (Social Features: Circles and Fusion)
+Plan: 1 of 6 in current phase
+Status: Active - Phase 5 In Progress
+Last activity: 2026-02-09 -- Completed 05-01-PLAN.md (Circles Backend)
 
-Progress: [██████░░░░] 63%
+Progress: [██████░░░░] 65%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 12
-- Average duration: 11 min
-- Total execution time: 3.5 hours
+- Total plans completed: 13
+- Average duration: 10 min
+- Total execution time: 3.6 hours
 
 **By Phase:**
 
@@ -31,10 +31,11 @@ Progress: [██████░░░░] 63%
 | 2 | 3/3 | 61 min | 20 min |
 | 3 | 3/3 | 18 min | 6 min |
 | 4 | 3/3 | 29 min | 10 min |
+| 5 | 1/6 | 5 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 6 min, 6 min, 11 min, 12 min
-- Trend: Phase 4 averaging 10 minutes per plan (stable)
+- Last 5 plans: 6 min, 11 min, 12 min, 6 min, 5 min
+- Trend: Maintaining fast execution (5-12 min per plan)
 
 *Updated after each plan completion*
 
@@ -103,6 +104,10 @@ Recent decisions affecting current work:
 - [Phase 04-03]: HD export to 2048x2048 with Real-ESRGAN or Lanczos fallback
 - [Phase 04-03]: ExportJob.is_paid defaults to False, set True by Phase 6 payment verification
 - [Phase 04-03]: Memory management: clear SD generator before loading Real-ESRGAN to avoid VRAM conflicts
+- [Phase 05-01]: Soft delete for memberships with ownership transfer on owner departure
+- [Phase 05-01]: Redis for invite token single-use tracking (30-day TTL)
+- [Phase 05-01]: Rate limiting via Redis counters (5 invites per circle per hour)
+- [Phase 05-01]: 10-member circle limit and 20-circle-per-user limit enforced
 
 ### Pending Todos
 
@@ -115,5 +120,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-09
-Stopped at: Completed 04-03-PLAN.md (AI Art Generation and HD Export Pipeline) - Phase 4 Complete
+Stopped at: Completed 05-01-PLAN.md (Circles Backend)
 Resume file: None
