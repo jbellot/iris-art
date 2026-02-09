@@ -22,6 +22,7 @@ import GalleryScreen from '../screens/Gallery/GalleryScreen';
 import PhotoDetailScreen from '../screens/Gallery/PhotoDetailScreen';
 import CameraScreen from '../screens/Camera/CameraScreen';
 import PhotoReviewScreen from '../screens/Camera/PhotoReviewScreen';
+import ProcessingResultScreen from '../screens/Processing/ProcessingResultScreen';
 
 import {
   OnboardingStackParamList,
@@ -88,6 +89,11 @@ function MainNavigator() {
       <MainStack.Screen
         name="PhotoReview"
         component={PhotoReviewScreen}
+        options={{ headerShown: false }}
+      />
+      <MainStack.Screen
+        name="ProcessingResult"
+        component={ProcessingResultScreen}
         options={{ headerShown: false }}
       />
     </MainStack.Navigator>

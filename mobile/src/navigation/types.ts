@@ -28,6 +28,10 @@ export type MainStackParamList = {
   PhotoDetail: {
     photoId: string;
   };
+  ProcessingResult: {
+    jobId: string;
+    photoId: string;
+  };
 };
 
 // Root Stack

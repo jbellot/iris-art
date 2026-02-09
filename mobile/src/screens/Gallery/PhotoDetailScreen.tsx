@@ -149,7 +149,7 @@ export default function PhotoDetailScreen({
 
   const handleViewResult = () => {
     if (processingJob && processingJob.jobId) {
-      navigation.navigate('ProcessingResult' as any, {
+      navigation.navigate('ProcessingResult', {
         jobId: processingJob.jobId,
         photoId: photoId,
       });
