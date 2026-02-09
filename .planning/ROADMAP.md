@@ -81,12 +81,12 @@ Plans:
   3. User can apply free preset styles (5-10) and preview premium styles (10-15) on their iris art
   4. User can generate an AI-unique artistic composition from their iris patterns
   5. User sees a low-res preview instantly, then progressive enhancement to HD; free exports include watermark, paid exports are HD without watermark
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 04-01: Camera guidance -- MediaPipe on-device iris detection, real-time overlay (distance, focus, lighting), burst capture with best-frame selection
-- [ ] 04-02: Preset artistic styles -- Fast Neural Style Transfer integration, 5-10 free styles, 10-15 premium styles, progressive preview
-- [ ] 04-03: AI-generated styles and HD export -- Stable Diffusion integration, unique composition generation, HD export pipeline, watermark logic
+- [ ] 04-01-PLAN.md -- Camera guidance: Native frame processor plugins (Apple Vision + ML Kit) for iris detection, blur/lighting analysis, real-time overlay UI, burst capture with best-frame selection
+- [ ] 04-02-PLAN.md -- Preset artistic styles: StylePreset/StyleJob models, Fast NST with ONNX (dev-mode OpenCV fallback), Celery tasks, style API, mobile style gallery and preview with progressive loading
+- [ ] 04-03-PLAN.md -- AI-generated styles and HD export: SDXL Turbo generator with ControlNet, AI art Celery task, HD export pipeline with Real-ESRGAN upscale, server-side watermark, mobile generation and export screens
 
 ### Phase 5: Social Features (Circles and Fusion)
 **Goal**: Users can create named circles, invite others, share iris art in group galleries, and combine irises into fusion artwork -- with consent controls throughout
@@ -145,7 +145,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 1. Foundation and Privacy Architecture | 3/3 | Complete ✅ | 2026-02-01 |
 | 2. Camera Capture and Image Upload | 3/3 | Complete | 2026-02-01 |
 | 3. AI Processing Pipeline | 3/3 | Complete ✅ | 2026-02-09 |
-| 4. Camera Guidance and Artistic Styles | 0/3 | Not started | - |
+| 4. Camera Guidance and Artistic Styles | 0/3 | Planned | - |
 | 5. Social Features (Circles and Fusion) | 0/3 | Not started | - |
 | 6. Payments and Freemium | 0/2 | Not started | - |
 | 7. Polish and Production Readiness | 0/2 | Not started | - |
