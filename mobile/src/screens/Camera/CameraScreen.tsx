@@ -37,10 +37,11 @@ import {
   grantBiometricConsent,
 } from '../../services/consent';
 import { useUiStore } from '../../store/uiStore';
-import ShutterButton from '../../components/Camera/ShutterButton';
+import { useIrisDetection } from '../../hooks/useIrisDetection';
 import FlashToggle from '../../components/Camera/FlashToggle';
 import CameraSwitcher from '../../components/Camera/CameraSwitcher';
-import IrisGuideOverlay from '../../components/Camera/IrisGuideOverlay';
+import CameraGuidanceOverlay from '../../components/Camera/CameraGuidanceOverlay';
+import BurstCaptureButton from '../../components/Camera/BurstCaptureButton';
 import CaptureHint from '../../components/Camera/CaptureHint';
 
 type CameraScreenProps = {
@@ -54,6 +55,7 @@ export default function CameraScreen({ navigation }: CameraScreenProps) {
   const cameraRef = useRef<Camera>(null);
   const { device, flash, zoom, minZoom, maxZoom, toggleFlash, toggleCamera } =
     useCamera();
+  const { guidanceState, frameProcessor } = useIrisDetection();
   const startZoom = useRef(1);
 
   // Permission states
@@ -159,32 +161,17 @@ export default function CameraScreen({ navigation }: CameraScreenProps) {
     }
   };
 
-  const handleCapture = useCallback(async () => {
-    if (!cameraRef.current || !device || capturing) {
-      return;
-    }
-
-    try {
-      setCapturing(true);
+  const handleCaptureComplete = useCallback(
+    (photoPath: string, photoWidth: number, photoHeight: number) => {
       setShowHint(false); // Dismiss hint after first capture
-
-      const photo: PhotoFile = await cameraRef.current.takePhoto({
-        flash: flash,
-        enableShutterSound: true,
-      });
-
-      // Navigate to PhotoReview with photo details
       navigation.navigate('PhotoReview', {
-        photoPath: photo.path,
-        photoWidth: photo.width,
-        photoHeight: photo.height,
+        photoPath,
+        photoWidth,
+        photoHeight,
       });
-    } catch (error) {
-      console.error('Failed to capture photo:', error);
-    } finally {
-      setCapturing(false);
-    }
-  }, [device, flash, capturing, navigation]);
+    },
+    [navigation]
+  );
 
   // Pinch-to-zoom gesture
   const pinchGesture = Gesture.Pinch()
@@ -327,12 +314,14 @@ export default function CameraScreen({ navigation }: CameraScreenProps) {
           isActive={isFocused && cameraPermission === 'granted'}
           photo={true}
           photoQualityBalance="quality"
+          fps={30}
+          frameProcessor={frameProcessor}
           animatedProps={animatedProps}
         />
       </GestureDetector>
 
-      {/* Iris guide overlay */}
-      <IrisGuideOverlay />
+      {/* Camera guidance overlay */}
+      <CameraGuidanceOverlay guidanceState={guidanceState} />
 
       {/* Capture hint */}
       {showHint && <CaptureHint onDismiss={() => setShowHint(false)} />}
@@ -350,7 +339,12 @@ export default function CameraScreen({ navigation }: CameraScreenProps) {
       {/* Bottom controls */}
       <View style={styles.bottomControls}>
         <CameraSwitcher onToggle={toggleCamera} />
-        <ShutterButton onCapture={handleCapture} disabled={capturing} />
+        <BurstCaptureButton
+          cameraRef={cameraRef}
+          flash={flash}
+          readyToCapture={guidanceState.readyToCapture}
+          onCaptureComplete={handleCaptureComplete}
+        />
         <View style={styles.placeholder} />
       </View>
     </View>
