@@ -10,18 +10,18 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 ## Current Position
 
 Phase: 4 of 7 (Camera Guidance and Artistic Styles)
-Plan: 2 of 3 in current phase
-Status: Active
-Last activity: 2026-02-09 -- Completed 04-02-PLAN.md (Artistic Style Transfer Pipeline)
+Plan: 3 of 3 in current phase
+Status: Active - Phase 4 Complete
+Last activity: 2026-02-09 -- Completed 04-03-PLAN.md (AI Art Generation and HD Export Pipeline)
 
-Progress: [██████░░░░] 58%
+Progress: [██████░░░░] 63%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 11
+- Total plans completed: 12
 - Average duration: 11 min
-- Total execution time: 3.3 hours
+- Total execution time: 3.5 hours
 
 **By Phase:**
 
@@ -30,11 +30,11 @@ Progress: [██████░░░░] 58%
 | 1 | 3/3 | 102 min | 34 min |
 | 2 | 3/3 | 61 min | 20 min |
 | 3 | 3/3 | 18 min | 6 min |
-| 4 | 2/3 | 17 min | 9 min |
+| 4 | 3/3 | 29 min | 10 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min, 6 min, 6 min, 11 min
-- Trend: Phase 4 averaging 9 minutes per plan
+- Last 5 plans: 6 min, 6 min, 11 min, 12 min
+- Trend: Phase 4 averaging 10 minutes per plan (stable)
 
 *Updated after each plan completion*
 
@@ -97,6 +97,12 @@ Recent decisions affecting current work:
 - [Phase 04-02]: Reuse Phase 3 WebSocket /ws/jobs/{job_id} endpoint for style job progress
 - [Phase 04-02]: Premium styles show 'coming soon' alert (payment is Phase 6)
 - [Phase 04-02]: Style model caching by name in ModelCache singleton
+- [Phase 04-03]: SDXL Turbo for AI generation (4 steps, no guidance) with dev-mode OpenCV fallback
+- [Phase 04-03]: AI generation reuses StyleJob model with style_preset_id=NULL
+- [Phase 04-03]: Tiled diagonal watermark for free exports (semi-transparent "IrisVue" repeated 3-4 times)
+- [Phase 04-03]: HD export to 2048x2048 with Real-ESRGAN or Lanczos fallback
+- [Phase 04-03]: ExportJob.is_paid defaults to False, set True by Phase 6 payment verification
+- [Phase 04-03]: Memory management: clear SD generator before loading Real-ESRGAN to avoid VRAM conflicts
 
 ### Pending Todos
 
@@ -109,5 +115,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-09
-Stopped at: Completed 04-02-PLAN.md (Artistic Style Transfer Pipeline)
+Stopped at: Completed 04-03-PLAN.md (AI Art Generation and HD Export Pipeline) - Phase 4 Complete
 Resume file: None
