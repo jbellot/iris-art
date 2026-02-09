@@ -13,6 +13,7 @@ from app.api.routes import (
     circles,
     consent,
     exports,
+    fusion,
     health,
     invites,
     photos,
@@ -66,4 +67,5 @@ app.include_router(exports.router)
 app.include_router(circles.router)
 app.include_router(invites.router)
 app.include_router(consent.router)
+app.include_router(fusion.router)
 app.include_router(websocket.router)
