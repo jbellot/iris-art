@@ -24,6 +24,7 @@ from app.services.styles import (
     list_style_jobs,
 )
 from app.storage.s3 import s3_client
+from app.workers.tasks.ai_generation import generate_ai_art
 from app.workers.tasks.style_transfer import apply_style_preset
 
 router = APIRouter(prefix="/api/v1/styles", tags=["styles"])
@@ -238,3 +239,101 @@ async def list_jobs(
         responses.append(response)
 
     return StyleJobListResponse(items=responses, total=total)
+
+
+@router.post("/generate", response_model=StyleJobResponse, status_code=status.HTTP_201_CREATED)
+async def generate_ai_art_endpoint(
+    photo_id: UUID,
+    processing_job_id: UUID,
+    db: Annotated[AsyncSession, Depends(get_session)],
+    current_user: Annotated[User, Depends(get_current_active_user)],
+    prompt: str | None = None,
+    style_hint: str | None = None,
+) -> StyleJobResponse:
+    """Submit AI art generation job.
+
+    Generates a unique artistic composition from processed iris using
+    Stable Diffusion SDXL Turbo with ControlNet guidance.
+
+    Note: Reuses StyleJob model with style_preset_id=NULL to indicate AI generation.
+
+    Args:
+        photo_id: Photo ID
+        processing_job_id: ProcessingJob ID (processed iris)
+        db: Database session
+        current_user: Authenticated user
+        prompt: Optional user prompt for generation
+        style_hint: Optional style hint (cosmic, abstract, watercolor, etc.)
+
+    Returns:
+        StyleJobResponse with job details and WebSocket URL
+
+    Raises:
+        HTTPException: If photo or processing job not found
+    """
+    from sqlalchemy import select
+
+    from app.models.photo import Photo
+
+    try:
+        # Validate photo ownership
+        result = await db.execute(
+            select(Photo).where(
+                Photo.id == photo_id,
+                Photo.user_id == current_user.id,
+            )
+        )
+        photo = result.scalar_one_or_none()
+
+        if not photo:
+            raise ValueError("Photo not found")
+
+        # Validate processing job ownership
+        result = await db.execute(
+            select(ProcessingJob).where(
+                ProcessingJob.id == processing_job_id,
+                ProcessingJob.user_id == current_user.id,
+            )
+        )
+        processing_job = result.scalar_one_or_none()
+
+        if not processing_job or not processing_job.result_s3_key:
+            raise ValueError("Processing job not found or not completed")
+
+        # Create StyleJob with style_preset_id=NULL (indicates AI generation)
+        from app.models.style_job import StyleJob
+
+        ai_job = StyleJob(
+            user_id=current_user.id,
+            photo_id=photo_id,
+            processing_job_id=processing_job_id,
+            style_preset_id=None,  # NULL indicates AI generation
+        )
+
+        db.add(ai_job)
+        await db.commit()
+        await db.refresh(ai_job)
+
+        # Submit to Celery with high priority
+        generate_ai_art.apply_async(
+            args=[
+                str(ai_job.id),
+                str(current_user.id),
+                str(photo_id),
+                str(processing_job_id),
+                prompt,
+                style_hint,
+            ],
+            task_id=str(ai_job.id),
+            queue="high_priority",
+        )
+
+        # Update job with Celery task ID
+        ai_job.celery_task_id = str(ai_job.id)
+        await db.commit()
+        await db.refresh(ai_job)
+
+        return await generate_job_response_with_urls(db, ai_job)
+
+    except ValueError as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e))

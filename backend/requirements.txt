@@ -24,3 +24,6 @@ opencv-python-headless>=4.10.0
 Pillow>=11.0
 numpy>=2.0
 scikit-image>=0.24.0
+diffusers>=0.30.0
+transformers>=4.40.0
+accelerate>=0.30.0

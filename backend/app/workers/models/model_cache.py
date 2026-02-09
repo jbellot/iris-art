@@ -15,6 +15,8 @@ class ModelCache:
     _enhancement_model = None
     _reflection_model = None
     _style_models: dict = {}  # Cache style models by style name
+    _sd_generator = None  # Stable Diffusion SDXL Turbo generator
+    _controlnet_processor = None  # ControlNet preprocessing
 
     @classmethod
     def get_segmentation_model(cls):
@@ -130,3 +132,56 @@ class ModelCache:
         """
         cls._style_models.clear()
         logger.info("Cleared all cached style models")
+
+    @classmethod
+    def get_sd_generator(cls):
+        """Get or load SDXL Turbo generator (lazy load).
+
+        Returns:
+            SDXLTurboGenerator instance
+        """
+        if cls._sd_generator is None:
+            try:
+                from app.workers.models.sd_generator import SDXLTurboGenerator
+
+                cls._sd_generator = SDXLTurboGenerator()
+                cls._sd_generator.load()
+
+                logger.info("Loaded and cached SDXL Turbo generator")
+
+            except Exception as e:
+                logger.error(f"Failed to load SDXL Turbo generator: {e}")
+                raise
+
+        return cls._sd_generator
+
+    @classmethod
+    def clear_sd_generator(cls):
+        """Clear SDXL Turbo generator to free GPU memory.
+
+        Important: Call before loading Real-ESRGAN to avoid VRAM conflicts.
+        """
+        if cls._sd_generator is not None:
+            cls._sd_generator.unload()
+            cls._sd_generator = None
+            logger.info("Cleared SDXL Turbo generator")
+
+    @classmethod
+    def get_controlnet_processor(cls):
+        """Get or load ControlNet processor (lazy load).
+
+        Returns:
+            ControlNetProcessor instance
+        """
+        if cls._controlnet_processor is None:
+            try:
+                from app.workers.models.controlnet_processor import ControlNetProcessor
+
+                cls._controlnet_processor = ControlNetProcessor()
+                logger.info("Loaded and cached ControlNet processor")
+
+            except Exception as e:
+                logger.error(f"Failed to load ControlNet processor: {e}")
+                raise
+
+        return cls._controlnet_processor
