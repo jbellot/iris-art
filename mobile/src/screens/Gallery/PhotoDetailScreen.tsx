@@ -25,6 +25,9 @@ import { useQueryClient, useQuery } from '@tanstack/react-query';
 import { MainStackParamList } from '../../navigation/types';
 import api from '../../services/api';
 import { Photo } from '../../types/photo';
+import { useProcessing } from '../../hooks/useProcessing';
+import { useProcessingStore } from '../../store/processingStore';
+import { useJobProgress } from '../../hooks/useJobProgress';
 
 type PhotoDetailScreenProps = {
   navigation: NativeStackNavigationProp<MainStackParamList, 'PhotoDetail'>;
@@ -40,6 +43,39 @@ export default function PhotoDetailScreen({
 }: PhotoDetailScreenProps) {
   const { photoId } = route.params;
   const queryClient = useQueryClient();
+  const { startProcessing } = useProcessing();
+  const processingJob = useProcessingStore((state) =>
+    state.getJobForPhoto(photoId),
+  );
+  const { updateJob } = useProcessingStore();
+
+  // WebSocket progress updates
+  const jobProgress = useJobProgress(processingJob?.jobId || null);
+
+  // Update store when WebSocket sends updates
+  React.useEffect(() => {
+    if (processingJob && jobProgress.status) {
+      updateJob(processingJob.jobId, {
+        status: jobProgress.status as any,
+        progress: jobProgress.progress,
+        step: jobProgress.step,
+        error: jobProgress.error,
+        result: jobProgress.result,
+      });
+
+      // Invalidate photos cache when completed
+      if (jobProgress.status === 'completed') {
+        queryClient.invalidateQueries({ queryKey: ['photos'] });
+      }
+    }
+  }, [
+    processingJob,
+    jobProgress.status,
+    jobProgress.progress,
+    jobProgress.step,
+    jobProgress.error,
+    jobProgress.result,
+  ]);
 
   // Fetch photo details (or use cached data)
   const { data: photo, isLoading } = useQuery({
@@ -102,6 +138,24 @@ export default function PhotoDetailScreen({
     );
   };
 
+  const handleProcess = async () => {
+    try {
+      const jobId = await startProcessing(photoId);
+      console.log('Processing started:', jobId);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to start processing. Please try again.');
+    }
+  };
+
+  const handleViewResult = () => {
+    if (processingJob && processingJob.jobId) {
+      navigation.navigate('ProcessingResult' as any, {
+        jobId: processingJob.jobId,
+        photoId: photoId,
+      });
+    }
+  };
+
   if (isLoading || !photo) {
     return (
       <SafeAreaView style={styles.container}>
@@ -112,6 +166,15 @@ export default function PhotoDetailScreen({
     );
   }
 
+  // Determine button state
+  const showProcessButton =
+    !processingJob || processingJob.status === 'failed';
+  const showProgressIndicator =
+    processingJob &&
+    (processingJob.status === 'pending' || processingJob.status === 'processing');
+  const showViewResultButton =
+    processingJob && processingJob.status === 'completed';
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -121,9 +184,33 @@ export default function PhotoDetailScreen({
           onPress={() => navigation.goBack()}>
           <Text style={styles.headerButtonText}>←</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.headerButton} onPress={handleDelete}>
-          <Text style={styles.headerButtonText}>🗑</Text>
-        </TouchableOpacity>
+        <View style={styles.headerRight}>
+          {showProcessButton && (
+            <TouchableOpacity
+              style={styles.processButton}
+              onPress={handleProcess}>
+              <Text style={styles.processButtonText}>✨ Process</Text>
+            </TouchableOpacity>
+          )}
+          {showProgressIndicator && (
+            <View style={styles.progressIndicator}>
+              <ActivityIndicator size="small" color="#007AFF" />
+              <Text style={styles.progressText}>
+                {Math.round(processingJob.progress)}%
+              </Text>
+            </View>
+          )}
+          {showViewResultButton && (
+            <TouchableOpacity
+              style={styles.viewResultButton}
+              onPress={handleViewResult}>
+              <Text style={styles.viewResultButtonText}>View Result</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity style={styles.headerButton} onPress={handleDelete}>
+            <Text style={styles.headerButtonText}>🗑</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* Photo with pinch-to-zoom */}
@@ -159,6 +246,11 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
   },
+  headerRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   headerButton: {
     width: 40,
     height: 40,
@@ -168,6 +260,38 @@ const styles = StyleSheet.create({
   headerButtonText: {
     color: '#fff',
     fontSize: 24,
+  },
+  processButton: {
+    backgroundColor: '#007AFF',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  processButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  progressIndicator: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  progressText: {
+    color: '#007AFF',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  viewResultButton: {
+    backgroundColor: '#34C759',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  },
+  viewResultButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
   },
   photoContainer: {
     flex: 1,

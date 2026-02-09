@@ -15,6 +15,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { MainStackParamList } from '../../navigation/types';
 import { useGallery } from '../../hooks/useGallery';
 import { useUpload, useUploadStore } from '../../hooks/useUpload';
+import { useProcessingStore } from '../../store/processingStore';
 import { Photo } from '../../types/photo';
 import PhotoThumbnail from '../../components/Gallery/PhotoThumbnail';
 import EmptyGallery from '../../components/Gallery/EmptyGallery';
@@ -39,6 +40,7 @@ export default function GalleryScreen({ navigation }: GalleryScreenProps) {
 
   const { retryUpload } = useUpload();
   const uploads = useUploadStore((state) => state.getAllUploads());
+  const processingJobs = useProcessingStore((state) => state.getAllJobs());
 
   // Merge upload state with API photos
   const galleryItems = useMemo(() => {
@@ -97,10 +99,15 @@ export default function GalleryScreen({ navigation }: GalleryScreenProps) {
     return uploads.find((u) => u.photoId === photo.id || u.id === photo.id);
   };
 
+  const getProcessingJob = (photo: Photo) => {
+    return processingJobs.find((job) => job.photoId === photo.id);
+  };
+
   const renderItem = ({ item }: { item: Photo }) => (
     <PhotoThumbnail
       photo={item}
       uploadState={getUploadState(item)}
+      processingJob={getProcessingJob(item)}
       onPress={handlePhotoPress}
       width={COLUMN_WIDTH}
     />

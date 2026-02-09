@@ -6,11 +6,14 @@ import { TouchableOpacity, StyleSheet, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { Photo } from '../../types/photo';
 import { UploadItem } from '../../hooks/useUpload';
+import { ProcessingJobState } from '../../store/processingStore';
 import UploadProgressOverlay from './UploadProgressOverlay';
+import ProcessingBadge from './ProcessingBadge';
 
 interface PhotoThumbnailProps {
   photo: Photo;
   uploadState?: UploadItem;
+  processingJob?: ProcessingJobState;
   onPress: (photo: Photo) => void;
   width: number;
 }
@@ -18,6 +21,7 @@ interface PhotoThumbnailProps {
 export default function PhotoThumbnail({
   photo,
   uploadState,
+  processingJob,
   onPress,
   width,
 }: PhotoThumbnailProps) {
@@ -55,6 +59,15 @@ export default function PhotoThumbnail({
           progress={uploadState.progress}
           status={uploadState.status}
           error={uploadState.error}
+        />
+      )}
+
+      {/* Show processing badge if processing */}
+      {processingJob && (
+        <ProcessingBadge
+          status={processingJob.status}
+          progress={processingJob.progress}
+          step={processingJob.step}
         />
       )}
 

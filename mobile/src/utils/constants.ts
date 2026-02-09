@@ -3,9 +3,15 @@
  */
 
 // API Configuration
+import { Platform } from 'react-native';
+
 export const API_BASE_URL = __DEV__
-  ? 'http://localhost:8000/api/v1'
+  ? `http://${Platform.OS === 'android' ? '10.0.2.2' : 'localhost'}:8000/api/v1`
   : 'https://api.irisart.app/api/v1';
+
+export const WS_BASE_URL = __DEV__
+  ? `ws://${Platform.OS === 'android' ? '10.0.2.2' : 'localhost'}:8000`
+  : 'wss://api.irisart.app';
 
 // App Metadata
 export const APP_NAME = 'IrisArt';
