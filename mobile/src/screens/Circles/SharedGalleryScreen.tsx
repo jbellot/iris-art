@@ -90,14 +90,21 @@ export default function SharedGalleryScreen({ navigation, route }: Props) {
   };
 
   const handleCreateFusion = () => {
-    Alert.alert('Coming Soon', 'Fusion creation will be available in Phase 05-06');
+    if (selectedCount < 2 || selectedCount > 4) {
+      Alert.alert('Invalid Selection', 'Please select 2-4 artworks to create a fusion.');
+      return;
+    }
+    const artworkIds = Array.from(selectedArtworks);
+    navigation.navigate('FusionBuilder', { artworkIds, circleId });
   };
 
   const handleCreateComposition = () => {
-    Alert.alert(
-      'Coming Soon',
-      'Side-by-side composition will be available in Phase 05-06'
-    );
+    if (selectedCount < 2 || selectedCount > 4) {
+      Alert.alert('Invalid Selection', 'Please select 2-4 artworks for a composition.');
+      return;
+    }
+    const artworkIds = Array.from(selectedArtworks);
+    navigation.navigate('CompositionBuilder', { artworkIds, circleId });
   };
 
   const handleCancelSelection = () => {
