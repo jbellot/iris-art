@@ -14,6 +14,7 @@ class ModelCache:
     _segmentation_model = None
     _enhancement_model = None
     _reflection_model = None
+    _style_models: dict = {}  # Cache style models by style name
 
     @classmethod
     def get_segmentation_model(cls):
@@ -93,3 +94,39 @@ class ModelCache:
             return None
 
         return cls._reflection_model
+
+    @classmethod
+    def get_style_model(cls, style_name: str, model_path: str):
+        """Get or load style transfer model (lazy load and cache by style name).
+
+        Args:
+            style_name: Unique style identifier (used as cache key)
+            model_path: Path to ONNX model file
+
+        Returns:
+            StyleTransferModel instance
+        """
+        if style_name not in cls._style_models:
+            try:
+                from app.workers.models.style_transfer_model import StyleTransferModel
+
+                model = StyleTransferModel()
+                model.load(model_path)
+                cls._style_models[style_name] = model
+
+                logger.info(f"Loaded and cached style model: {style_name}")
+
+            except Exception as e:
+                logger.error(f"Failed to load style model {style_name}: {e}")
+                raise
+
+        return cls._style_models[style_name]
+
+    @classmethod
+    def clear_style_models(cls):
+        """Clear all cached style models to free memory.
+
+        Useful when switching to different model types (e.g., Stable Diffusion).
+        """
+        cls._style_models.clear()
+        logger.info("Cleared all cached style models")

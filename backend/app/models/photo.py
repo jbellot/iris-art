@@ -58,6 +58,9 @@ class Photo(Base):
     processing_jobs: Mapped[List["ProcessingJob"]] = relationship(
         "ProcessingJob", back_populates="photo", cascade="all, delete-orphan"
     )
+    style_jobs: Mapped[List["StyleJob"]] = relationship(
+        "StyleJob", back_populates="photo", cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
         return f"<Photo(id={self.id}, user_id={self.user_id}, status={self.upload_status})>"

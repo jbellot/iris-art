@@ -2,7 +2,7 @@
 
 import uuid
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 from sqlalchemy import DateTime, Float, ForeignKey, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
@@ -70,6 +70,9 @@ class ProcessingJob(Base):
     # Relationships
     user: Mapped["User"] = relationship("User", back_populates="processing_jobs")
     photo: Mapped["Photo"] = relationship("Photo", back_populates="processing_jobs")
+    style_jobs: Mapped[List["StyleJob"]] = relationship(
+        "StyleJob", back_populates="processing_job", cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
         return f"<ProcessingJob(id={self.id}, status={self.status}, step={self.current_step})>"

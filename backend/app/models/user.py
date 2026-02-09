@@ -46,6 +46,9 @@ class User(Base):
     processing_jobs: Mapped[List["ProcessingJob"]] = relationship(
         "ProcessingJob", back_populates="user", cascade="all, delete-orphan"
     )
+    style_jobs: Mapped[List["StyleJob"]] = relationship(
+        "StyleJob", back_populates="user", cascade="all, delete-orphan"
+    )
 
     def __repr__(self) -> str:
         return f"<User(id={self.id}, email={self.email})>"
