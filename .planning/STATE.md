@@ -38,6 +38,7 @@ Progress: [███████░░░] 68%
 - Trend: Phase 5 averaging 3.3 min per plan (very fast execution)
 
 *Updated after each plan completion*
+| Phase 05 P03 | 5 | 2 tasks | 13 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,9 @@ Recent decisions affecting current work:
 - [Phase 05-02]: Circles navigation integrated via header button (not tab bar) for MVP
 - [Phase 05-02]: Placeholder screens for SharedGallery and Fusion screens (forward-compatibility)
 - [Phase 05-02]: Deep link configuration for invite URLs (irisvue://invite/:token)
+- [Phase 05-03]: Self-owned artwork skips consent (implicit approval for own content)
+- [Phase 05-03]: Consent requests check for existing granted/pending status to avoid duplicates
+- [Phase 05-03]: Shared gallery only shows artwork from active circle members (excludes left_at != NULL)
 
 ### Pending Todos
 
