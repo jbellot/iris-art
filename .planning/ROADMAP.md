@@ -17,7 +17,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 3: AI Processing Pipeline** - Iris segmentation, reflection removal, enhancement, async job processing with progress ✅
 - [x] **Phase 4: Camera Guidance and Artistic Styles** - AI-guided capture overlay, preset and AI-generated styles, HD export ✅
 - [x] **Phase 5: Social Features (Circles and Fusion)** - Named circles, invitations, shared galleries, iris fusion and composition ✅
-- [ ] **Phase 6: Payments and Freemium** - RevenueCat, in-app purchases, feature gating, rate limiting
+- [x] **Phase 6: Payments and Freemium** - RevenueCat, in-app purchases, feature gating, rate limiting ✅
 - [ ] **Phase 7: Polish and Production Readiness** - CI/CD, monitoring, CDN optimization, App Store submission readiness
 
 ## Phase Details
@@ -117,11 +117,11 @@ Plans:
   2. Premium styles are locked behind purchase and unlock after payment
   3. Free users are rate-limited to 3 AI-processed images per month with clear messaging when limit is reached
   4. All purchase receipts are validated server-side to prevent fraud
-**Plans**: 2 plans
+**Plans**: 2 plans (2/2 complete) ✅
 
 Plans:
-- [ ] 06-01-PLAN.md -- RevenueCat integration: Purchase/WebhookEvent models, webhook receiver with idempotency, purchase service, rate limiting service, mobile SDK + usePurchases hook + PremiumGate/RateLimitBanner components
-- [ ] 06-02-PLAN.md -- Feature gating and payment UI: rate limit on AI generation, premium style gate, HD export purchase flow, rate limit hook and messaging on mobile screens
+- [x] 06-01-PLAN.md -- RevenueCat integration: Purchase/WebhookEvent models, webhook receiver with idempotency, purchase service, rate limiting service, mobile SDK + usePurchases hook + PremiumGate/RateLimitBanner components
+- [x] 06-02-PLAN.md -- Feature gating and payment UI: rate limit on AI generation, premium style gate, HD export purchase flow, rate limit hook and messaging on mobile screens
 
 ### Phase 7: Polish and Production Readiness
 **Goal**: The app is production-ready with CI/CD, monitoring, optimized delivery, and is prepared for App Store and Play Store submission
@@ -150,9 +150,9 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 3. AI Processing Pipeline | 3/3 | Complete ✅ | 2026-02-09 |
 | 4. Camera Guidance and Artistic Styles | 3/3 | Complete ✅ | 2026-02-09 |
 | 5. Social Features (Circles and Fusion) | 6/6 | Complete ✅ | 2026-02-09 |
-| 6. Payments and Freemium | 0/2 | Planned | - |
+| 6. Payments and Freemium | 2/2 | Complete ✅ | 2026-02-10 |
 | 7. Polish and Production Readiness | 0/2 | Not started | - |
 
 ---
 *Roadmap created: 2026-02-01*
-*Last updated: 2026-02-09 (Phase 5 complete)*
+*Last updated: 2026-02-10 (Phase 6 complete)*
