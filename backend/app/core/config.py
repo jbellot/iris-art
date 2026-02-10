@@ -43,5 +43,9 @@ class Settings(BaseSettings):
     REVENUECAT_PUBLIC_API_KEY_IOS: str = ""
     REVENUECAT_PUBLIC_API_KEY_ANDROID: str = ""
 
+    # Monitoring
+    SENTRY_DSN: str = ""
+    ENVIRONMENT: str = "development"
+
 
 settings = Settings()
