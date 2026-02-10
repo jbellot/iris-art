@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime, timezone
 from typing import List, Optional
 
-from sqlalchemy import Boolean, DateTime, String, func
+from sqlalchemy import Boolean, DateTime, Integer, String, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -27,6 +27,11 @@ class User(Base):
     # OAuth provider fields
     auth_provider: Mapped[Optional[str]] = mapped_column(String, nullable=True)
     auth_provider_id: Mapped[Optional[str]] = mapped_column(String, nullable=True)
+
+    # Premium and rate limiting fields
+    is_premium: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
+    monthly_ai_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    last_reset_month: Mapped[Optional[str]] = mapped_column(String(7), nullable=True)
 
     # Timestamps
     created_at: Mapped[datetime] = mapped_column(
@@ -69,6 +74,9 @@ class User(Base):
     )
     fusion_artworks: Mapped[List["FusionArtwork"]] = relationship(
         "FusionArtwork", back_populates="creator", cascade="all, delete-orphan"
+    )
+    purchases: Mapped[List["Purchase"]] = relationship(
+        "Purchase", back_populates="user", cascade="all, delete-orphan"
     )
 
     def __repr__(self) -> str:

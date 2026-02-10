@@ -19,8 +19,10 @@ from app.api.routes import (
     photos,
     privacy,
     processing,
+    purchases,
     styles,
     users,
+    webhooks,
     websocket,
 )
 from app.core.config import settings
@@ -68,4 +70,6 @@ app.include_router(circles.router)
 app.include_router(invites.router)
 app.include_router(consent.router)
 app.include_router(fusion.router)
+app.include_router(purchases.router, prefix="/api/v1/purchases", tags=["purchases"])
+app.include_router(webhooks.router, prefix="/api/v1/webhooks", tags=["webhooks"])
 app.include_router(websocket.router)

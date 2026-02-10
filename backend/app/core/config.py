@@ -37,5 +37,11 @@ class Settings(BaseSettings):
     # CORS
     CORS_ORIGINS: List[str] = ["http://localhost:3000", "http://localhost:8081"]
 
+    # RevenueCat
+    REVENUECAT_API_KEY: str = ""
+    REVENUECAT_WEBHOOK_SECRET: str = ""
+    REVENUECAT_PUBLIC_API_KEY_IOS: str = ""
+    REVENUECAT_PUBLIC_API_KEY_ANDROID: str = ""
+
 
 settings = Settings()
