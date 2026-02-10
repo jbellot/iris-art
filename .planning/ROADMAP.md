@@ -132,11 +132,11 @@ Plans:
   2. Production errors are captured in Sentry with actionable context and alerting
   3. Images load fast via CDN (Cloudinary or CloudFront) across regions
   4. App passes App Store and Play Store review guidelines (Privacy Manifest, permissions, content policies)
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 07-01: CI/CD and monitoring -- GitHub Actions pipeline, Sentry integration, health checks, alerting
-- [ ] 07-02: CDN optimization and store submission -- Cloudinary/CloudFront setup, image delivery optimization, App Store and Play Store submission prep
+- [ ] 07-01-PLAN.md -- CI/CD, testing, and monitoring: backend pytest smoke tests, multi-stage Dockerfile, GitHub Actions workflows (backend CI + Android build), Sentry integration (backend + mobile), health check improvements
+- [ ] 07-02-PLAN.md -- CDN and store submission readiness: production Docker Compose with Traefik + HTTPS, CDN-ready storage layer, PrivacyInfo.xcprivacy update, Android release signing, production environment template
 
 ## Progress
 
