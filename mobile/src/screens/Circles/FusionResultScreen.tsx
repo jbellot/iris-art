@@ -18,6 +18,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import { CirclesStackParamList } from '../../navigation/types';
 import { useFusion } from '../../hooks/useFusion';
+import { saveImageToDevice } from '../../utils/saveToDevice';
 
 type Props = {
   navigation: NativeStackNavigationProp<CirclesStackParamList, 'FusionResult'>;
@@ -31,14 +32,13 @@ export default function FusionResultScreen({ navigation, route }: Props) {
   const [saving, setSaving] = useState(false);
 
   const handleSaveToGallery = async () => {
-    if (!resultUrl) return;
-
-    // For MVP, show alert that this feature will be implemented
-    Alert.alert(
-      'Save to Gallery',
-      'This will save the fusion to your device gallery using react-native-cameraroll or similar library.',
-      [{ text: 'OK' }]
-    );
+    if (!resultUrl || saving) return;
+    setSaving(true);
+    try {
+      await saveImageToDevice(resultUrl);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleShare = async () => {
@@ -160,9 +160,12 @@ export default function FusionResultScreen({ navigation, route }: Props) {
           {/* Action Buttons */}
           <View style={styles.actionsSection}>
             <TouchableOpacity
-              style={styles.actionButton}
-              onPress={handleSaveToGallery}>
-              <Text style={styles.actionButtonText}>💾 Save to Gallery</Text>
+              style={[styles.actionButton, saving && styles.actionButtonDisabled]}
+              onPress={handleSaveToGallery}
+              disabled={saving}>
+              <Text style={styles.actionButtonText}>
+                {saving ? '💾 Saving...' : '💾 Save to Gallery'}
+              </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
@@ -324,6 +327,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',
+  },
+  actionButtonDisabled: {
+    opacity: 0.5,
   },
   actionButtonOutlineText: {
     color: '#999',

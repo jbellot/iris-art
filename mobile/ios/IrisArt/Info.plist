@@ -50,5 +50,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Save your iris artwork to your photo library</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Access your photos to share iris artwork</string>
 </dict>
 </plist>

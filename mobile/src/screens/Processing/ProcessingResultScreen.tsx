@@ -20,6 +20,7 @@ import { getJobStatus } from '../../services/processing';
 import { useProcessing } from '../../hooks/useProcessing';
 import { ProcessingJob } from '../../types/processing';
 import BeforeAfterSlider from '../../components/Processing/BeforeAfterSlider';
+import { saveImageToDevice } from '../../utils/saveToDevice';
 
 type ProcessingResultScreenProps = {
   navigation: NativeStackNavigationProp<
@@ -40,6 +41,7 @@ export default function ProcessingResultScreen({
   const { reprocess } = useProcessing();
   const [job, setJob] = useState<ProcessingJob | null>(null);
   const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     loadJobStatus();
@@ -58,19 +60,12 @@ export default function ProcessingResultScreen({
   };
 
   const handleSaveToDevice = async () => {
-    if (!job || !job.result_url) {
-      return;
-    }
-
+    if (!job || !job.result_url || saving) return;
+    setSaving(true);
     try {
-      // TODO: Implement save to device using CameraRoll or MediaLibrary
-      // For now, show a placeholder alert
-      Alert.alert(
-        'Save to Device',
-        'Image download and save functionality will be implemented with platform-specific permissions.',
-      );
-    } catch (error) {
-      Alert.alert('Error', 'Failed to save image to device.');
+      await saveImageToDevice(job.result_url);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -226,9 +221,12 @@ export default function ProcessingResultScreen({
       {/* Actions */}
       <View style={styles.actionsContainer}>
         <TouchableOpacity
-          style={styles.actionButton}
-          onPress={handleSaveToDevice}>
-          <Text style={styles.actionButtonText}>💾 Save</Text>
+          style={[styles.actionButton, saving && styles.actionButtonDisabled]}
+          onPress={handleSaveToDevice}
+          disabled={saving}>
+          <Text style={styles.actionButtonText}>
+            {saving ? '💾 Saving...' : '💾 Save'}
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.actionButton} onPress={handleShare}>
           <Text style={styles.actionButtonText}>📤 Share</Text>
@@ -320,6 +318,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 14,
     fontWeight: '600',
+  },
+  actionButtonDisabled: {
+    opacity: 0.5,
   },
   loadingContainer: {
     flex: 1,

@@ -16,17 +16,10 @@ import {
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation, useRoute, RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-// Note: CameraRoll requires @react-native-camera-roll/camera-roll package
-// For now, we'll use a placeholder that shows an alert
-const CameraRoll = {
-  save: async (uri: string, options?: any) => {
-    // TODO: Install @react-native-camera-roll/camera-roll and implement
-    throw new Error('CameraRoll not yet configured');
-  },
-};
 import {ProgressiveImage} from '../../components/Styles/ProgressiveImage';
 import {useStyleTransfer} from '../../hooks/useStyleTransfer';
 import type {MainStackParamList} from '../../navigation/types';
+import {saveImageToDevice} from '../../utils/saveToDevice';
 
 type StylePreviewScreenRouteProp = RouteProp<
   MainStackParamList,
@@ -50,6 +43,7 @@ export function StylePreviewScreen() {
   });
 
   const [jobSubmitted, setJobSubmitted] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   // Get the selected style preset info
   const allPresets = [...(presets?.free || []), ...(presets?.premium || [])];
@@ -71,17 +65,17 @@ export function StylePreviewScreen() {
   };
 
   const handleSave = async () => {
-    if (!activeJob?.resultUrl) {
-      Alert.alert('Not Ready', 'Please wait for styling to complete.');
+    if (!activeJob?.resultUrl || saving) {
+      if (!activeJob?.resultUrl) {
+        Alert.alert('Not Ready', 'Please wait for styling to complete.');
+      }
       return;
     }
-
+    setSaving(true);
     try {
-      await CameraRoll.save(activeJob.resultUrl, {type: 'photo'});
-      Alert.alert('Saved', 'Styled iris saved to your camera roll!');
-    } catch (err) {
-      console.error('Failed to save image:', err);
-      Alert.alert('Error', 'Failed to save image. Please try again.');
+      await saveImageToDevice(activeJob.resultUrl);
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -239,17 +233,17 @@ export function StylePreviewScreen() {
             style={[
               styles.actionButton,
               styles.primaryButton,
-              !activeJob?.resultUrl && styles.disabledButton,
+              (!activeJob?.resultUrl || saving) && styles.disabledButton,
             ]}
             onPress={handleSave}
-            disabled={!activeJob?.resultUrl}>
+            disabled={!activeJob?.resultUrl || saving}>
             <Text
               style={[
                 styles.actionButtonText,
                 styles.primaryButtonText,
-                !activeJob?.resultUrl && styles.disabledButtonText,
+                (!activeJob?.resultUrl || saving) && styles.disabledButtonText,
               ]}>
-              Save
+              {saving ? 'Saving...' : 'Save'}
             </Text>
           </TouchableOpacity>
         </View>
