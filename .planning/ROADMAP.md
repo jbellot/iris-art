@@ -19,6 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Social Features (Circles and Fusion)** - Named circles, invitations, shared galleries, iris fusion and composition ✅
 - [x] **Phase 6: Payments and Freemium** - RevenueCat, in-app purchases, feature gating, rate limiting ✅
 - [x] **Phase 7: Polish and Production Readiness** - CI/CD, monitoring, CDN optimization, App Store submission readiness ✅
+- [ ] **Phase 8: API Path Fix and UI Polish** - Fix double-prefix API paths, implement Save to Device across screens (Gap Closure)
 
 ## Phase Details
 
@@ -138,10 +139,26 @@ Plans:
 - [x] 07-01-PLAN.md -- CI/CD, testing, and monitoring: backend pytest smoke tests, multi-stage Dockerfile, GitHub Actions workflows (backend CI + Android build), Sentry integration (backend + mobile), health check improvements
 - [x] 07-02-PLAN.md -- CDN and store submission readiness: production Docker Compose with Traefik + HTTPS, CDN-ready storage layer, PrivacyInfo.xcprivacy update, Android release signing, production environment template
 
+### Phase 8: API Path Fix and UI Polish
+**Goal**: All mobile API calls reach the correct backend endpoints and users can save artwork to their device from all result screens
+**Depends on**: Phase 7 (gap closure from milestone audit)
+**Requirements**: None new (fixes existing requirement delivery)
+**Gap Closure**: Closes gaps from v1.0 milestone audit
+**Success Criteria** (what must be TRUE):
+  1. All 6 mobile service files (circles, invites, fusion, artworkConsent, exports, styles) make API calls without double `/api/v1` prefix
+  2. User can save processed iris art to device camera roll from ProcessingResultScreen
+  3. User can save styled art to device camera roll from StylePreviewScreen
+  4. User can save fusion/composition art to device camera roll from FusionResultScreen
+  5. E2E flows 3-6 (Style Application, AI Generation, HD Export, Circle Social) pass without 404 errors
+**Plans**: 0 plans (0/1 complete)
+
+Plans:
+- [ ] 08-01-PLAN.md -- API path fix and Save to Device: Remove /api/v1 prefix from 6 service files, implement CameraRoll.save in 3 result screens
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -152,7 +169,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 5. Social Features (Circles and Fusion) | 6/6 | Complete ✅ | 2026-02-09 |
 | 6. Payments and Freemium | 2/2 | Complete ✅ | 2026-02-10 |
 | 7. Polish and Production Readiness | 2/2 | Complete ✅ | 2026-02-10 |
+| 8. API Path Fix and UI Polish | 0/1 | Pending | — |
 
 ---
 *Roadmap created: 2026-02-01*
-*Last updated: 2026-02-10 (Phase 7 complete — all phases done)*
+*Last updated: 2026-02-10 (Phase 8 added — gap closure from milestone audit)*
