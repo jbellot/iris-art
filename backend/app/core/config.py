@@ -47,5 +47,8 @@ class Settings(BaseSettings):
     SENTRY_DSN: str = ""
     ENVIRONMENT: str = "development"
 
+    # CDN
+    CDN_BASE_URL: str = ""  # e.g., https://d1234.cloudfront.net — empty means direct MinIO
+
 
 settings = Settings()

@@ -105,6 +105,45 @@ class S3Client:
         )
         return url
 
+    def get_public_url(self, key: str) -> str:
+        """Get public URL for an object (CDN if configured, otherwise presigned URL).
+
+        Args:
+            key: S3 object key
+
+        Returns:
+            CDN URL if CDN_BASE_URL is set, otherwise presigned URL
+        """
+        from app.core.config import settings
+
+        if settings.CDN_BASE_URL:
+            # Return CDN URL: {CDN_BASE_URL}/{bucket}/{key}
+            return f"{settings.CDN_BASE_URL}/{self.bucket_name}/{key}"
+        else:
+            # Fallback to presigned URL
+            return self.generate_presigned_url(key)
+
+    def get_download_url(self, key: str, expiry: int = 3600) -> str:
+        """Get download URL for an object (single function for all API endpoints).
+
+        Uses CDN URL if CDN_BASE_URL is configured, falls back to presigned GET URL.
+
+        Args:
+            key: S3 object key
+            expiry: URL expiry in seconds (only used for presigned URLs, not CDN)
+
+        Returns:
+            CDN URL or presigned GET URL
+        """
+        from app.core.config import settings
+
+        if settings.CDN_BASE_URL:
+            # Return CDN URL (expiry ignored, CloudFront handles caching)
+            return f"{settings.CDN_BASE_URL}/{self.bucket_name}/{key}"
+        else:
+            # Fallback to presigned GET URL with expiry
+            return self.generate_presigned_url(key, expiry)
+
 
 # Global S3 client instance
 s3_client = S3Client()
