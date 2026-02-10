@@ -21,7 +21,7 @@ import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {ProgressiveImage} from '../../components/Styles/ProgressiveImage';
 import {useAIGeneration} from '../../hooks/useAIGeneration';
 import {useRateLimit} from '../../hooks/useRateLimit';
-import {RateLimitBanner} from '../../components/RateLimitBanner';
+import RateLimitBanner from '../../components/RateLimitBanner';
 import {purchasePremiumStyles} from '../../services/purchases';
 import type {MainStackParamList} from '../../navigation/types';
 

@@ -162,7 +162,6 @@ export default function SharedGalleryScreen({ navigation, route }: Props) {
         renderItem={renderItem}
         keyExtractor={(item) => item.artwork_id}
         numColumns={2}
-        estimatedItemSize={COLUMN_WIDTH}
         contentContainerStyle={styles.listContainer}
         ListHeaderComponent={renderHeader}
         ListEmptyComponent={renderEmpty}
@@ -228,7 +227,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
   },
   listContainer: {
-    paddingHorizontal: PADDING,
+    paddingLeft: PADDING,
+    paddingRight: PADDING,
     paddingTop: 8,
   },
   headerContainer: {

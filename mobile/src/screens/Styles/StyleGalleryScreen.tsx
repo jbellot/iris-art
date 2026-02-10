@@ -11,7 +11,7 @@ import {StyleGrid} from '../../components/Styles/StyleGrid';
 import {useStyleTransfer} from '../../hooks/useStyleTransfer';
 import {usePurchases} from '../../hooks/usePurchases';
 import {purchasePremiumStyles} from '../../services/purchases';
-import {PremiumGate} from '../../components/PremiumGate';
+import PremiumGate from '../../components/PremiumGate';
 import type {MainStackParamList} from '../../navigation/types';
 import type {StylePreset} from '../../types/styles';
 

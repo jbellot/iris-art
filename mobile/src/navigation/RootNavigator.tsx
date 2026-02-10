@@ -3,7 +3,7 @@
  */
 import React, { useEffect } from 'react';
 import { ActivityIndicator, View, StyleSheet, TouchableOpacity, Text } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, LinkingOptions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useAuthStore } from '../store/authStore';
 import { useUiStore } from '../store/uiStore';
@@ -163,7 +163,7 @@ export default function RootNavigator() {
   }
 
   // Deep linking configuration
-  const linking = {
+  const linking: LinkingOptions<RootStackParamList> = {
     prefixes: ['irisvue://', 'https://irisvue.app', 'https://app.irisvue.app'],
     config: {
       screens: {

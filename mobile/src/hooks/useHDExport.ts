@@ -88,7 +88,7 @@ export function useHDExport() {
           }
 
           // Wait before next attempt
-          await new Promise(resolve => setTimeout(resolve, pollInterval));
+          await new Promise<void>(resolve => setTimeout(resolve, pollInterval));
         } catch (error) {
           console.error('Error polling payment status:', error);
           // Continue polling on error
