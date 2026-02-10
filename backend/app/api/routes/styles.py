@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.deps import get_current_active_user, get_session
+from app.api.dependencies.rate_limit import check_ai_generation_limit
 from app.models.processing_job import ProcessingJob
 from app.models.user import User
 from app.schemas.styles import (
@@ -16,6 +17,7 @@ from app.schemas.styles import (
     StyleListResponse,
     StylePresetResponse,
 )
+from app.services.rate_limiting import RateLimitService
 from app.services.styles import (
     create_style_job,
     generate_job_response_with_urls,
@@ -89,7 +91,7 @@ async def get_style_presets(
 async def apply_style(
     request: StyleJobSubmitRequest,
     db: Annotated[AsyncSession, Depends(get_session)],
-    current_user: Annotated[User, Depends(get_current_active_user)],
+    current_user: Annotated[User, Depends(check_ai_generation_limit)],
 ) -> StyleJobResponse:
     """Submit a style transfer job.
 
@@ -98,13 +100,15 @@ async def apply_style(
     Args:
         request: Style job submission request
         db: Database session
-        current_user: Authenticated user
+        current_user: Authenticated user (rate-limited for free users)
 
     Returns:
         StyleJobResponse with job details and WebSocket URL
 
     Raises:
         HTTPException: If photo, processing job, or preset not found
+        HTTPException 403: If premium style and user not premium
+        HTTPException 429: If rate limit exceeded for free user
     """
     try:
         # Create style job
@@ -154,6 +158,17 @@ async def apply_style(
         if not preset:
             raise ValueError("Style preset not found")
 
+        # Check premium tier access
+        if preset.tier.value == "premium" and not current_user.is_premium:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={
+                    "error": "premium_required",
+                    "message": "This style requires Premium. Unlock all premium styles with a one-time purchase.",
+                    "product_id": "premium_styles",
+                },
+            )
+
         # Submit to Celery with high priority
         apply_style_preset.apply_async(
             args=[
@@ -166,6 +181,9 @@ async def apply_style(
             task_id=str(job.id),
             queue="high_priority",
         )
+
+        # Increment rate limit usage after successful dispatch
+        await RateLimitService.increment_usage(db, current_user)
 
         return await generate_job_response_with_urls(db, job)
 
@@ -246,7 +264,7 @@ async def generate_ai_art_endpoint(
     photo_id: UUID,
     processing_job_id: UUID,
     db: Annotated[AsyncSession, Depends(get_session)],
-    current_user: Annotated[User, Depends(get_current_active_user)],
+    current_user: Annotated[User, Depends(check_ai_generation_limit)],
     prompt: str | None = None,
     style_hint: str | None = None,
 ) -> StyleJobResponse:
@@ -261,7 +279,7 @@ async def generate_ai_art_endpoint(
         photo_id: Photo ID
         processing_job_id: ProcessingJob ID (processed iris)
         db: Database session
-        current_user: Authenticated user
+        current_user: Authenticated user (rate-limited for free users)
         prompt: Optional user prompt for generation
         style_hint: Optional style hint (cosmic, abstract, watercolor, etc.)
 
@@ -270,6 +288,7 @@ async def generate_ai_art_endpoint(
 
     Raises:
         HTTPException: If photo or processing job not found
+        HTTPException 429: If rate limit exceeded for free user
     """
     from sqlalchemy import select
 
@@ -332,6 +351,9 @@ async def generate_ai_art_endpoint(
         ai_job.celery_task_id = str(ai_job.id)
         await db.commit()
         await db.refresh(ai_job)
+
+        # Increment rate limit usage after successful dispatch
+        await RateLimitService.increment_usage(db, current_user)
 
         return await generate_job_response_with_urls(db, ai_job)
 

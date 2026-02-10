@@ -107,6 +107,41 @@ async def get_export_job_status(
     return await generate_export_response_with_url(db, job)
 
 
+@router.get("/jobs/{job_id}/payment-status")
+async def get_export_payment_status(
+    job_id: UUID,
+    db: Annotated[AsyncSession, Depends(get_session)],
+    current_user: Annotated[User, Depends(get_current_active_user)],
+):
+    """Get payment status for an HD export job.
+
+    Used by mobile to poll after purchase completion to verify webhook processed.
+
+    Args:
+        job_id: Export job ID
+        db: Database session
+        current_user: Authenticated user
+
+    Returns:
+        dict: {"is_paid": bool, "job_id": str}
+
+    Raises:
+        HTTPException: If job not found or not owned by user
+    """
+    job = await get_export_job(db, job_id, current_user.id)
+
+    if not job:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Export job not found",
+        )
+
+    return {
+        "is_paid": job.is_paid,
+        "job_id": str(job.id),
+    }
+
+
 @router.get("/jobs", response_model=ExportJobListResponse)
 async def list_export_jobs_endpoint(
     db: Annotated[AsyncSession, Depends(get_session)],
