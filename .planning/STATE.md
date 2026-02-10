@@ -5,7 +5,7 @@
 See: .planning/PROJECT.md (updated 2026-02-01)
 
 **Core value:** Any user can capture a beautiful iris photo with their phone and turn it into personalized art
-**Current focus:** All 7 phases complete — milestone v1.0 ready
+**Current focus:** All 8 phases complete — milestone v1.0 ready
 
 ## Current Position
 
@@ -143,8 +143,8 @@ Recent decisions affecting current work:
 - [Phase 07-02]: Release keystore from environment variables (not committed) for CI/CD
 - [Phase 08]: @react-native-camera-roll/camera-roll for save-to-device (bare workflow)
 - [Phase 08]: Download-then-save pattern with RNFS for remote image URLs
-- [Phase 08]: @react-native-camera-roll/camera-roll for save-to-device (bare workflow)
-- [Phase 08]: Download-then-save pattern with RNFS for remote image URLs
+- [Phase 08]: --legacy-peer-deps for camera-roll install (React 19 peer dep conflict, same as Phase 06)
+- [Phase 08]: Shared saveToDevice.ts utility avoids duplication across 3 result screens
 
 ### Pending Todos
 

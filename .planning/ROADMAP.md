@@ -19,7 +19,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 5: Social Features (Circles and Fusion)** - Named circles, invitations, shared galleries, iris fusion and composition ✅
 - [x] **Phase 6: Payments and Freemium** - RevenueCat, in-app purchases, feature gating, rate limiting ✅
 - [x] **Phase 7: Polish and Production Readiness** - CI/CD, monitoring, CDN optimization, App Store submission readiness ✅
-- [ ] **Phase 8: API Path Fix and UI Polish** - Fix double-prefix API paths, implement Save to Device across screens (Gap Closure)
+- [x] **Phase 8: API Path Fix and UI Polish** - Fix double-prefix API paths, implement Save to Device across screens (Gap Closure) ✅
 
 ## Phase Details
 
@@ -150,10 +150,10 @@ Plans:
   3. User can save styled art to device camera roll from StylePreviewScreen
   4. User can save fusion/composition art to device camera roll from FusionResultScreen
   5. E2E flows 3-6 (Style Application, AI Generation, HD Export, Circle Social) pass without 404 errors
-**Plans**: 1 plan (0/1 complete)
+**Plans**: 1 plan (1/1 complete) ✅
 
 Plans:
-- [ ] 08-01-PLAN.md -- API path fix and Save to Device: Remove /api/v1 prefix from 6 service files, implement CameraRoll.save in 3 result screens
+- [x] 08-01-PLAN.md -- API path fix and Save to Device: Remove /api/v1 prefix from 6 service files, implement CameraRoll.save in 3 result screens
 
 ## Progress
 
@@ -169,7 +169,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 5. Social Features (Circles and Fusion) | 6/6 | Complete ✅ | 2026-02-09 |
 | 6. Payments and Freemium | 2/2 | Complete ✅ | 2026-02-10 |
 | 7. Polish and Production Readiness | 2/2 | Complete ✅ | 2026-02-10 |
-| 8. API Path Fix and UI Polish | 0/1 | Pending | — |
+| 8. API Path Fix and UI Polish | 1/1 | Complete ✅ | 2026-02-10 |
 
 ---
 *Roadmap created: 2026-02-01*
