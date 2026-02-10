@@ -67,6 +67,41 @@ export function useHDExport() {
     throw new Error('Download not yet implemented');
   }, []);
 
+  // Poll payment status after purchase completion
+  // Returns true when is_paid=true, false on timeout (30s max)
+  const pollPaymentStatus = useCallback(
+    async (exportJobId: string): Promise<boolean> => {
+      const maxAttempts = 15; // 15 attempts * 2 seconds = 30 seconds
+      const pollInterval = 2000; // 2 seconds
+
+      for (let i = 0; i < maxAttempts; i++) {
+        try {
+          // Import api client dynamically to avoid circular dependency
+          const {default: apiClient} = await import('../services/api');
+          const response = await apiClient.get<{
+            is_paid: boolean;
+            job_id: string;
+          }>(`/exports/jobs/${exportJobId}/payment-status`);
+
+          if (response.data.is_paid) {
+            return true;
+          }
+
+          // Wait before next attempt
+          await new Promise(resolve => setTimeout(resolve, pollInterval));
+        } catch (error) {
+          console.error('Error polling payment status:', error);
+          // Continue polling on error
+        }
+      }
+
+      // Timeout after 30 seconds
+      console.warn('Payment status polling timed out after 30 seconds');
+      return false;
+    },
+    [],
+  );
+
   return {
     // Active export state
     activeExport,
@@ -79,5 +114,6 @@ export function useHDExport() {
     // Actions
     requestExport,
     downloadResult,
+    pollPaymentStatus,
   };
 }

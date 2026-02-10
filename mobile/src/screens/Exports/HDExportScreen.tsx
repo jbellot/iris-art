@@ -17,6 +17,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {useNavigation, useRoute, RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {useHDExport} from '../../hooks/useHDExport';
+import {purchaseHDExport} from '../../services/purchases';
 import type {MainStackParamList} from '../../navigation/types';
 
 // Placeholder CameraRoll
@@ -38,9 +39,11 @@ export function HDExportScreen() {
 
   const {sourceType, sourceJobId, previewImageUrl} = route.params;
 
-  const {requestExport, activeExport, isExporting} = useHDExport();
+  const {requestExport, activeExport, isExporting, pollPaymentStatus} =
+    useHDExport();
 
   const [exportSubmitted, setExportSubmitted] = useState(false);
+  const [isPurchasing, setIsPurchasing] = useState(false);
 
   const handleRequestExport = async () => {
     if (exportSubmitted) {
@@ -87,12 +90,57 @@ export function HDExportScreen() {
     }
   };
 
-  const handlePaymentGate = () => {
-    // Phase 6: Wire to RevenueCat payment flow
-    Alert.alert(
-      'Coming Soon',
-      'Watermark-free HD exports will be available with premium membership.',
-    );
+  const handlePaidExport = async () => {
+    if (exportSubmitted || isPurchasing) {
+      return;
+    }
+
+    setIsPurchasing(true);
+
+    try {
+      // First, create the export job to get the job ID
+      const exportJob = await requestExport(sourceType, sourceJobId);
+
+      // Trigger RevenueCat purchase
+      const customerInfo = await purchaseHDExport(exportJob.id);
+
+      if (!customerInfo) {
+        // User cancelled
+        setIsPurchasing(false);
+        return;
+      }
+
+      // Purchase successful, poll for webhook processing
+      Alert.alert('Purchase Successful', 'Verifying payment...');
+
+      const isPaid = await pollPaymentStatus(exportJob.id);
+
+      if (isPaid) {
+        Alert.alert(
+          'Payment Verified',
+          'Your watermark-free HD export will begin shortly!',
+        );
+        setExportSubmitted(true);
+      } else {
+        Alert.alert(
+          'Verification Timeout',
+          'Payment is processing. Your export will be watermark-free when ready. Check back in a moment.',
+        );
+        setExportSubmitted(true);
+      }
+    } catch (err: any) {
+      console.error('Failed to purchase HD export:', err);
+      Alert.alert(
+        'Purchase Failed',
+        err.message || 'Failed to complete purchase. Please try again.',
+        [
+          {text: 'Cancel', style: 'cancel'},
+          {text: 'Retry', onPress: handlePaidExport},
+        ],
+      );
+    } finally {
+      setIsPurchasing(false);
+    }
   };
 
   const isComplete = activeExport?.status === 'completed';
@@ -148,17 +196,25 @@ export function HDExportScreen() {
               </TouchableOpacity>
             </View>
 
-            <View style={[styles.paymentCard, styles.paymentCardDisabled]}>
+            <View style={styles.paymentCard}>
               <Text style={styles.paymentPrice}>4.99 EUR</Text>
               <Text style={styles.paymentNote}>
-                Watermark-free HD export (Coming soon)
+                Watermark-free HD export
               </Text>
               <TouchableOpacity
-                style={[styles.exportButton, styles.exportButtonDisabled]}
-                onPress={handlePaymentGate}>
-                <Text style={styles.exportButtonTextDisabled}>
-                  Export HD without watermark
-                </Text>
+                style={[
+                  styles.exportButton,
+                  isPurchasing && styles.exportButtonDisabled,
+                ]}
+                onPress={handlePaidExport}
+                disabled={isPurchasing}>
+                {isPurchasing ? (
+                  <ActivityIndicator size="small" color="#9CA3AF" />
+                ) : (
+                  <Text style={styles.exportButtonText}>
+                    Export HD (4.99 EUR, no watermark)
+                  </Text>
+                )}
               </TouchableOpacity>
             </View>
           </View>

@@ -20,6 +20,9 @@ import {useNavigation, useRoute, RouteProp} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {ProgressiveImage} from '../../components/Styles/ProgressiveImage';
 import {useAIGeneration} from '../../hooks/useAIGeneration';
+import {useRateLimit} from '../../hooks/useRateLimit';
+import {RateLimitBanner} from '../../components/RateLimitBanner';
+import {purchasePremiumStyles} from '../../services/purchases';
 import type {MainStackParamList} from '../../navigation/types';
 
 // Placeholder CameraRoll
@@ -55,15 +58,58 @@ export function AIGenerateScreen() {
     processingJobId,
   });
 
+  const rateLimit = useRateLimit();
+
   const [prompt, setPrompt] = useState('');
   const [selectedHint, setSelectedHint] = useState<string | null>(null);
 
   const handleGenerate = async () => {
     try {
       await generate(prompt || undefined, selectedHint || undefined);
-    } catch (err) {
+      // Refresh rate limit after successful generation
+      rateLimit.refresh();
+    } catch (err: any) {
       console.error('Failed to generate AI art:', err);
-      Alert.alert('Error', 'Failed to generate AI art. Please try again.');
+
+      // Handle 429 rate limit error
+      if (err.response?.status === 429) {
+        const errorData = err.response?.data?.detail || {};
+        const message =
+          errorData.message ||
+          'Monthly limit reached. Upgrade to Premium for unlimited AI generation.';
+        const resetDate = errorData.reset_date
+          ? new Date(errorData.reset_date).toLocaleDateString()
+          : 'next month';
+
+        Alert.alert('Monthly Limit Reached', `${message}\n\nResets: ${resetDate}`, [
+          {text: 'Maybe Later', style: 'cancel'},
+          {
+            text: 'Upgrade',
+            onPress: handleUpgrade,
+          },
+        ]);
+      } else {
+        Alert.alert('Error', 'Failed to generate AI art. Please try again.');
+      }
+    }
+  };
+
+  const handleUpgrade = async () => {
+    try {
+      const customerInfo = await purchasePremiumStyles();
+      if (customerInfo) {
+        Alert.alert(
+          'Premium Unlocked!',
+          'You now have unlimited AI generation and access to all premium styles.',
+        );
+        rateLimit.refresh();
+      }
+    } catch (err: any) {
+      console.error('Failed to purchase premium:', err);
+      Alert.alert(
+        'Purchase Failed',
+        err.message || 'Failed to complete purchase. Please try again.',
+      );
     }
   };
 
@@ -124,6 +170,16 @@ export function AIGenerateScreen() {
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         keyboardShouldPersistTaps="handled">
+        {/* Rate limit banner */}
+        {!rateLimit.isLoading && (
+          <RateLimitBanner
+            currentUsage={rateLimit.current_usage}
+            limit={rateLimit.limit}
+            resetDate={rateLimit.reset_date}
+            onUpgrade={handleUpgrade}
+          />
+        )}
+
         {/* Source iris thumbnail */}
         <View style={styles.sourceSection}>
           <Text style={styles.sectionTitle}>Your Iris</Text>
@@ -178,9 +234,21 @@ export function AIGenerateScreen() {
             </View>
 
             <TouchableOpacity
-              style={styles.generateButton}
-              onPress={handleGenerate}>
-              <Text style={styles.generateButtonText}>Generate AI Art</Text>
+              style={[
+                styles.generateButton,
+                rateLimit.isLimitReached && styles.generateButtonDisabled,
+              ]}
+              onPress={handleGenerate}
+              disabled={rateLimit.isLimitReached}>
+              <Text
+                style={[
+                  styles.generateButtonText,
+                  rateLimit.isLimitReached && styles.generateButtonTextDisabled,
+                ]}>
+                {rateLimit.isLimitReached
+                  ? 'Monthly Limit Reached'
+                  : 'Generate AI Art'}
+              </Text>
             </TouchableOpacity>
           </>
         ) : isGenerating ? (
@@ -345,10 +413,16 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
   },
+  generateButtonDisabled: {
+    backgroundColor: '#E5E7EB',
+  },
   generateButtonText: {
     fontSize: 16,
     fontWeight: '600',
     color: '#fff',
+  },
+  generateButtonTextDisabled: {
+    color: '#9CA3AF',
   },
   generatingSection: {
     alignItems: 'center',
