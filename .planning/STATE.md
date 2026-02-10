@@ -9,19 +9,19 @@ See: .planning/PROJECT.md (updated 2026-02-01)
 
 ## Current Position
 
-Phase: 6 of 7 (Payments and Freemium)
-Plan: 2 of 2 in current phase
-Status: Phase 6 Complete - Ready for Phase 7
-Last activity: 2026-02-10 -- Completed 06-02-PLAN.md (Feature Payment Integration)
+Phase: 7 of 7 (Polish and Production Readiness)
+Plan: 1 of 2 in current phase
+Status: In Progress
+Last activity: 2026-02-10 -- Completed 07-01-PLAN.md (CI/CD and Monitoring)
 
-Progress: [█████████░] 85%
+Progress: [█████████░] 90%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 20
+- Total plans completed: 21
 - Average duration: 7 min
-- Total execution time: 4.5 hours
+- Total execution time: 4.96 hours
 
 **By Phase:**
 
@@ -33,10 +33,11 @@ Progress: [█████████░] 85%
 | 4 | 3/3 | 29 min | 10 min |
 | 5 | 6/6 | 23 min | 3.8 min |
 | 6 | 2/2 | 22 min | 11 min |
+| 7 | 1/2 | 5 min | 5 min |
 
 **Recent Trend:**
-- Last 5 plans: 4 min, 4 min, 6 min, 8 min, 14 min
-- Trend: Phase 6 slightly slower due to payment integration complexity
+- Last 5 plans: 4 min, 6 min, 8 min, 14 min, 5 min
+- Trend: Phase 7 Plan 01 efficient execution with no deviations
 
 *Updated after each plan completion*
 
@@ -128,6 +129,11 @@ Recent decisions affecting current work:
 - [Phase 06-02]: Poll payment status after purchase with 30s timeout (ensures webhook processed before export)
 - [Phase 06-02]: Structured 403 error with product_id for premium styles (mobile knows which product to purchase)
 - [Phase 06-02]: Rate limit banner always visible on AIGenerateScreen (proactive quota visibility)
+- [Phase 07-01]: Backend CI runs pytest with PostgreSQL and Redis services, builds Docker image on main push
+- [Phase 07-01]: Multi-stage Dockerfile reduces image size and runs as non-root user for security
+- [Phase 07-01]: Sentry enabled only when SENTRY_DSN is set (production-only, not dev)
+- [Phase 07-01]: Health endpoints follow Kubernetes patterns: /health/liveness (simple) and /health/readiness (checks DB + Redis + MinIO)
+- [Phase 07-01]: Coverage threshold set at 30% for initial smoke tests (can be increased as tests grow)
 
 ### Pending Todos
 
@@ -140,5 +146,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-02-10
-Stopped at: Completed 06-02-PLAN.md (Feature Payment Integration) - Phase 6 Complete
+Stopped at: Completed 07-01-PLAN.md (CI/CD and Monitoring)
 Resume file: None
