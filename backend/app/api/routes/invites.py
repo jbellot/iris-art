@@ -18,7 +18,7 @@ from app.schemas.circles import (
 )
 from app.services import circle_service, invite_service
 
-router = APIRouter(prefix="/circles", tags=["invites"])
+router = APIRouter(prefix="/api/v1/circles", tags=["invites"])
 
 
 @router.post(

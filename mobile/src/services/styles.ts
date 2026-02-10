@@ -14,7 +14,7 @@ import type {
  * Get all style presets grouped by tier
  */
 export const getStylePresets = async (): Promise<StyleListResponse> => {
-  const response = await api.get<StyleListResponse>('/api/v1/styles/presets');
+  const response = await api.get<StyleListResponse>('/styles/presets');
   return response.data;
 };
 
@@ -24,7 +24,7 @@ export const getStylePresets = async (): Promise<StyleListResponse> => {
 export const applyStyle = async (
   request: StyleJobSubmitRequest,
 ): Promise<StyleJob> => {
-  const response = await api.post<StyleJob>('/api/v1/styles/apply', request);
+  const response = await api.post<StyleJob>('/styles/apply', request);
   return response.data;
 };
 
@@ -32,7 +32,7 @@ export const applyStyle = async (
  * Get style job status
  */
 export const getStyleJob = async (jobId: string): Promise<StyleJob> => {
-  const response = await api.get<StyleJob>(`/api/v1/styles/jobs/${jobId}`);
+  const response = await api.get<StyleJob>(`/styles/jobs/${jobId}`);
   return response.data;
 };
 
@@ -54,7 +54,7 @@ export const getStyleJobs = async (
   }
 
   const response = await api.get<StyleJobListResponse>(
-    '/api/v1/styles/jobs',
+    '/styles/jobs',
     {params},
   );
   return response.data;

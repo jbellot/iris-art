@@ -18,7 +18,7 @@ from app.schemas.circles import (
 )
 from app.services import circle_service
 
-router = APIRouter(prefix="/circles", tags=["circles"])
+router = APIRouter(prefix="/api/v1/circles", tags=["circles"])
 
 
 @router.post("", response_model=CircleResponse, status_code=status.HTTP_201_CREATED)

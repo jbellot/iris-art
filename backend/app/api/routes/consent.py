@@ -18,7 +18,7 @@ from app.schemas.consent import (
 )
 from app.services import consent_service
 
-router = APIRouter(prefix="/consent", tags=["consent"])
+router = APIRouter(prefix="/api/v1/consent", tags=["consent"])
 
 
 @router.post("/request", response_model=Dict[str, List])

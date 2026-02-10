@@ -13,7 +13,7 @@ import {
 
 /**
  * Request consent for artworks
- * POST /api/v1/consent/request
+ * POST /consent/request
  */
 export const requestConsent = async (
   artworkIds: string[],
@@ -27,7 +27,7 @@ export const requestConsent = async (
   };
 
   const response = await apiClient.post<ConsentRequest[]>(
-    '/api/v1/consent/request',
+    '/consent/request',
     payload
   );
   return response.data;
@@ -35,45 +35,45 @@ export const requestConsent = async (
 
 /**
  * Get pending consent requests for the current user
- * GET /api/v1/consent/pending
+ * GET /consent/pending
  */
 export const getPendingConsents = async (): Promise<PendingConsent[]> => {
   const response = await apiClient.get<PendingConsent[]>(
-    '/api/v1/consent/pending'
+    '/consent/pending'
   );
   return response.data;
 };
 
 /**
  * Decide on a consent request (grant or deny)
- * POST /api/v1/consent/{consentId}/decide
+ * POST /consent/{consentId}/decide
  */
 export const decideConsent = async (
   consentId: string,
   decision: 'granted' | 'denied'
 ): Promise<void> => {
   const payload: DecideConsentPayload = { decision };
-  await apiClient.post(`/api/v1/consent/${consentId}/decide`, payload);
+  await apiClient.post(`/consent/${consentId}/decide`, payload);
 };
 
 /**
  * Revoke a previously granted consent
- * POST /api/v1/consent/{consentId}/revoke
+ * POST /consent/{consentId}/revoke
  */
 export const revokeConsent = async (consentId: string): Promise<void> => {
-  await apiClient.post(`/api/v1/consent/${consentId}/revoke`);
+  await apiClient.post(`/consent/${consentId}/revoke`);
 };
 
 /**
  * Get consent status for a list of artworks
- * GET /api/v1/consent/status
+ * GET /consent/status
  */
 export const getConsentStatus = async (
   artworkIds: string[],
   purpose: ConsentPurpose
 ): Promise<ConsentStatus[]> => {
   const response = await apiClient.get<ConsentStatus[]>(
-    '/api/v1/consent/status',
+    '/consent/status',
     {
       params: {
         artwork_ids: artworkIds.join(','),

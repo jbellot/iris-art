@@ -16,7 +16,7 @@ import type {StyleJob} from '../types/styles';
 export async function requestHDExport(
   request: HDExportRequest,
 ): Promise<ExportJob> {
-  const {data} = await apiClient.post<ExportJob>('/api/v1/exports/hd', request);
+  const {data} = await apiClient.post<ExportJob>('/exports/hd', request);
   return data;
 }
 
@@ -25,7 +25,7 @@ export async function requestHDExport(
  */
 export async function getExportJob(jobId: string): Promise<ExportJob> {
   const {data} = await apiClient.get<ExportJob>(
-    `/api/v1/exports/jobs/${jobId}`,
+    `/exports/jobs/${jobId}`,
   );
   return data;
 }
@@ -35,7 +35,7 @@ export async function getExportJob(jobId: string): Promise<ExportJob> {
  */
 export async function getExportJobs(): Promise<ExportJobListResponse> {
   const {data} = await apiClient.get<ExportJobListResponse>(
-    '/api/v1/exports/jobs',
+    '/exports/jobs',
   );
   return data;
 }
@@ -63,7 +63,7 @@ export async function generateAIArt(
   }
 
   const {data} = await apiClient.post<StyleJob>(
-    '/api/v1/styles/generate',
+    '/styles/generate',
     null,
     {params},
   );

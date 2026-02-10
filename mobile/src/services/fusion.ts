@@ -10,7 +10,7 @@ export const fusionService = {
     circleId: string,
     blendMode: BlendMode = 'poisson'
   ): Promise<FusionSubmitResponse> {
-    const response = await apiClient.post<FusionSubmitResponse>('/api/v1/fusion', {
+    const response = await apiClient.post<FusionSubmitResponse>('/fusion', {
       artwork_ids: artworkIds,
       circle_id: circleId,
       blend_mode: blendMode,
@@ -26,7 +26,7 @@ export const fusionService = {
     circleId: string,
     layout: LayoutType
   ): Promise<FusionSubmitResponse> {
-    const response = await apiClient.post<FusionSubmitResponse>('/api/v1/composition', {
+    const response = await apiClient.post<FusionSubmitResponse>('/composition', {
       artwork_ids: artworkIds,
       circle_id: circleId,
       layout,
@@ -38,7 +38,7 @@ export const fusionService = {
    * Get fusion artwork status
    */
   async getFusionStatus(fusionId: string): Promise<FusionArtwork> {
-    const response = await apiClient.get<FusionArtwork>(`/api/v1/fusion/${fusionId}`);
+    const response = await apiClient.get<FusionArtwork>(`/fusion/${fusionId}`);
     return response.data;
   },
 
@@ -46,7 +46,7 @@ export const fusionService = {
    * Get list of user's fusion artworks
    */
   async getUserFusions(offset: number = 0, limit: number = 20): Promise<FusionArtwork[]> {
-    const response = await apiClient.get<FusionArtwork[]>('/api/v1/fusion', {
+    const response = await apiClient.get<FusionArtwork[]>('/fusion', {
       params: { offset, limit },
     });
     return response.data;
