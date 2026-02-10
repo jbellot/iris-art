@@ -117,11 +117,11 @@ Plans:
   2. Premium styles are locked behind purchase and unlock after payment
   3. Free users are rate-limited to 3 AI-processed images per month with clear messaging when limit is reached
   4. All purchase receipts are validated server-side to prevent fraud
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 06-01: RevenueCat integration -- SDK setup, product configuration, cross-platform IAP, server-side receipt validation
-- [ ] 06-02: Feature gating and payment UI -- premium style locks, HD export purchase flow, rate limiting for free users, upsell touchpoints
+- [ ] 06-01-PLAN.md -- RevenueCat integration: Purchase/WebhookEvent models, webhook receiver with idempotency, purchase service, rate limiting service, mobile SDK + usePurchases hook + PremiumGate/RateLimitBanner components
+- [ ] 06-02-PLAN.md -- Feature gating and payment UI: rate limit on AI generation, premium style gate, HD export purchase flow, rate limit hook and messaging on mobile screens
 
 ### Phase 7: Polish and Production Readiness
 **Goal**: The app is production-ready with CI/CD, monitoring, optimized delivery, and is prepared for App Store and Play Store submission
@@ -150,7 +150,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7
 | 3. AI Processing Pipeline | 3/3 | Complete ✅ | 2026-02-09 |
 | 4. Camera Guidance and Artistic Styles | 3/3 | Complete ✅ | 2026-02-09 |
 | 5. Social Features (Circles and Fusion) | 6/6 | Complete ✅ | 2026-02-09 |
-| 6. Payments and Freemium | 0/2 | Not started | - |
+| 6. Payments and Freemium | 0/2 | Planned | - |
 | 7. Polish and Production Readiness | 0/2 | Not started | - |
 
 ---
