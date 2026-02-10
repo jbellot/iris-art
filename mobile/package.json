@@ -22,7 +22,7 @@
     "react": "19.2.0",
     "react-native": "0.83.1",
     "react-native-encrypted-storage": "^4.0.3",
-    "react-native-fast-image": "^8.6.3",
+    "@d11/react-native-fast-image": "^8.6.3",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.30.0",
     "react-native-permissions": "^5.4.4",

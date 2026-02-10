@@ -4,7 +4,7 @@
 
 import React, {useState} from 'react';
 import {StyleSheet, View, ActivityIndicator, Text, Image} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,

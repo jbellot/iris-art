@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 import { Photo } from '../../types/photo';
 import { UploadItem } from '../../hooks/useUpload';
 import { ProcessingJobState } from '../../store/processingStore';

@@ -20,7 +20,7 @@ import Animated, {
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
-import FastImage from 'react-native-fast-image';
+import FastImage from '@d11/react-native-fast-image';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import { MainStackParamList } from '../../navigation/types';
 import api from '../../services/api';
