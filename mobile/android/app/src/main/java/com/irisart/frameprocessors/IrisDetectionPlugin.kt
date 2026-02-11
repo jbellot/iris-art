@@ -3,6 +3,7 @@ package com.irisart.frameprocessors
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.face.FaceDetection
 import com.google.mlkit.vision.face.FaceDetectorOptions
+import com.mrousavy.camera.core.types.Orientation
 import com.mrousavy.camera.frameprocessors.Frame
 import com.mrousavy.camera.frameprocessors.FrameProcessorPlugin
 import com.mrousavy.camera.frameprocessors.VisionCameraProxy
@@ -18,7 +19,13 @@ class IrisDetectionPlugin(proxy: VisionCameraProxy, options: Map<String, Any>?) 
 
   override fun callback(frame: Frame, arguments: Map<String, Any>?): Any {
     val mediaImage = frame.image
-    val inputImage = InputImage.fromMediaImage(mediaImage, frame.orientation.toDegrees())
+    val rotationDegrees = when (frame.orientation) {
+      Orientation.PORTRAIT -> 0
+      Orientation.LANDSCAPE_RIGHT -> 90
+      Orientation.PORTRAIT_UPSIDE_DOWN -> 180
+      Orientation.LANDSCAPE_LEFT -> 270
+    }
+    val inputImage = InputImage.fromMediaImage(mediaImage, rotationDegrees)
 
     var result = mapOf(
       "detected" to false,
