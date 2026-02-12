@@ -3,15 +3,14 @@
 from fastapi import Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.dependencies.auth import get_current_user
-from app.core.db import get_db
+from app.api.deps import get_current_active_user, get_session
 from app.models.user import User
 from app.services.rate_limiting import RateLimitService
 
 
 async def check_ai_generation_limit(
-    user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_active_user),
+    db: AsyncSession = Depends(get_session),
 ) -> User:
     """Check if user is within AI generation rate limit.
 

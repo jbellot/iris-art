@@ -21,7 +21,7 @@ from app.services.processing import (
     get_job,
     get_user_jobs,
 )
-from app.workers.tasks.processing import process_iris_pipeline
+from app.workers.celery_app import celery_app
 
 router = APIRouter(prefix="/api/v1/processing", tags=["processing"])
 
@@ -50,7 +50,8 @@ async def submit_processing_job(
         job = await create_processing_job(db, current_user.id, request.photo_id)
 
         # Submit to Celery with high priority
-        process_iris_pipeline.apply_async(
+        celery_app.send_task(
+            "app.workers.tasks.processing.process_iris_pipeline",
             args=[str(job.id), str(request.photo_id), str(current_user.id)],
             task_id=str(job.id),
             queue="high_priority",
@@ -94,7 +95,8 @@ async def submit_batch_processing(
 
             # Submit with descending priority (first = 9, last = 0)
             priority = len(request.photo_ids) - idx - 1
-            process_iris_pipeline.apply_async(
+            celery_app.send_task(
+                "app.workers.tasks.processing.process_iris_pipeline",
                 args=[str(job.id), str(photo_id), str(current_user.id)],
                 task_id=str(job.id),
                 queue="high_priority",
@@ -217,7 +219,8 @@ async def reprocess_job(
         new_job = await create_processing_job(db, current_user.id, original_job.photo_id)
 
         # Submit to Celery
-        process_iris_pipeline.apply_async(
+        celery_app.send_task(
+            "app.workers.tasks.processing.process_iris_pipeline",
             args=[str(new_job.id), str(original_job.photo_id), str(current_user.id)],
             task_id=str(new_job.id),
             queue="high_priority",

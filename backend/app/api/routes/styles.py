@@ -26,8 +26,7 @@ from app.services.styles import (
     list_style_jobs,
 )
 from app.storage.s3 import s3_client
-from app.workers.tasks.ai_generation import generate_ai_art
-from app.workers.tasks.style_transfer import apply_style_preset
+from app.workers.celery_app import celery_app
 
 router = APIRouter(prefix="/api/v1/styles", tags=["styles"])
 
@@ -170,7 +169,8 @@ async def apply_style(
             )
 
         # Submit to Celery with high priority
-        apply_style_preset.apply_async(
+        celery_app.send_task(
+            "app.workers.tasks.style_transfer.apply_style_preset",
             args=[
                 str(job.id),
                 str(current_user.id),
@@ -334,7 +334,8 @@ async def generate_ai_art_endpoint(
         await db.refresh(ai_job)
 
         # Submit to Celery with high priority
-        generate_ai_art.apply_async(
+        celery_app.send_task(
+            "app.workers.tasks.ai_generation.generate_ai_art",
             args=[
                 str(ai_job.id),
                 str(current_user.id),

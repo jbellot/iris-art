@@ -5,8 +5,7 @@ import logging
 from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.api.dependencies.auth import get_current_user
-from app.core.db import get_db
+from app.api.deps import get_current_active_user, get_session
 from app.models.user import User
 from app.schemas.purchases import RateLimitStatusResponse, SubscriberStatusResponse
 from app.services.purchases import verify_subscriber_status
@@ -19,8 +18,8 @@ router = APIRouter()
 
 @router.get("/rate-limit-status", response_model=RateLimitStatusResponse)
 async def get_rate_limit_status(
-    user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    user: User = Depends(get_current_active_user),
+    db: AsyncSession = Depends(get_session),
 ) -> RateLimitStatusResponse:
     """Get current rate limit status for authenticated user.
 
@@ -49,7 +48,7 @@ async def get_rate_limit_status(
 
 @router.get("/subscriber-status", response_model=SubscriberStatusResponse)
 async def get_subscriber_status(
-    user: User = Depends(get_current_user),
+    user: User = Depends(get_current_active_user),
 ) -> SubscriberStatusResponse:
     """Get RevenueCat subscriber status for authenticated user.
 

@@ -15,8 +15,7 @@ from app.models.style_job import StyleJob
 from app.schemas.fusion import ConsentRequiredResponse, FusionResponse, FusionStatusResponse
 from app.services.consent_service import check_all_consents_granted
 from app.storage.s3 import S3Client
-from app.workers.tasks.composition import create_composition
-from app.workers.tasks.fusion_blending import create_fusion_artwork
+from app.workers.celery_app import celery_app
 
 
 async def submit_fusion(
@@ -126,7 +125,8 @@ async def submit_fusion(
     await db.refresh(fusion)
 
     # Submit Celery task
-    create_fusion_artwork.apply_async(
+    celery_app.send_task(
+        "app.workers.tasks.fusion_blending.create_fusion_artwork",
         args=[str(fusion.id), [str(aid) for aid in artwork_ids], blend_mode],
         task_id=str(fusion.id),
     )
@@ -256,7 +256,8 @@ async def submit_composition(
     await db.refresh(fusion)
 
     # Submit Celery task
-    create_composition.apply_async(
+    celery_app.send_task(
+        "app.workers.tasks.composition.create_composition",
         args=[str(fusion.id), [str(aid) for aid in artwork_ids], layout],
         task_id=str(fusion.id),
     )

@@ -33,8 +33,8 @@ def upgrade() -> None:
         sa.Column('model_s3_key', sa.String(length=255), nullable=False),
         sa.Column('sort_order', sa.Integer(), nullable=False),
         sa.Column('is_active', sa.Boolean(), nullable=False),
-        sa.Column('created_at', sa.DateTime(), nullable=False),
-        sa.Column('updated_at', sa.DateTime(), nullable=False),
+        sa.Column('created_at', sa.DateTime(), nullable=False, server_default=sa.func.now()),
+        sa.Column('updated_at', sa.DateTime(), nullable=False, server_default=sa.func.now()),
         sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_style_presets_name'), 'style_presets', ['name'], unique=True)
@@ -59,8 +59,8 @@ def upgrade() -> None:
         sa.Column('processing_time_ms', sa.Integer(), nullable=True),
         sa.Column('error_type', sa.String(length=50), nullable=True),
         sa.Column('error_message', sa.Text(), nullable=True),
-        sa.Column('created_at', sa.DateTime(), nullable=False),
-        sa.Column('updated_at', sa.DateTime(), nullable=False),
+        sa.Column('created_at', sa.DateTime(), nullable=False, server_default=sa.func.now()),
+        sa.Column('updated_at', sa.DateTime(), nullable=False, server_default=sa.func.now()),
         sa.ForeignKeyConstraint(['photo_id'], ['photos.id'], ),
         sa.ForeignKeyConstraint(['processing_job_id'], ['processing_jobs.id'], ),
         sa.ForeignKeyConstraint(['style_preset_id'], ['style_presets.id'], ),
@@ -79,8 +79,8 @@ def upgrade() -> None:
         sa.column('name', sa.String()),
         sa.column('display_name', sa.String()),
         sa.column('description', sa.Text()),
-        sa.column('category', sa.String()),
-        sa.column('tier', sa.String()),
+        sa.column('category', sa.Enum('ABSTRACT', 'WATERCOLOR', 'OIL_PAINTING', 'GEOMETRIC', 'COSMIC', 'NATURE', 'POP_ART', 'MINIMALIST', name='stylecategory')),
+        sa.column('tier', sa.Enum('FREE', 'PREMIUM', name='styletier')),
         sa.column('thumbnail_s3_key', sa.String()),
         sa.column('model_s3_key', sa.String()),
         sa.column('sort_order', sa.Integer()),

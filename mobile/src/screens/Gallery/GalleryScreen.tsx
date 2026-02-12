@@ -39,8 +39,10 @@ export default function GalleryScreen({ navigation }: GalleryScreenProps) {
   } = useGallery();
 
   const { retryUpload } = useUpload();
-  const uploads = useUploadStore((state) => state.getAllUploads());
-  const processingJobs = useProcessingStore((state) => state.getAllJobs());
+  const uploadsMap = useUploadStore((state) => state.uploads);
+  const jobsMap = useProcessingStore((state) => state.jobs);
+  const uploads = useMemo(() => Array.from(uploadsMap.values()), [uploadsMap]);
+  const processingJobs = useMemo(() => Array.from(jobsMap.values()), [jobsMap]);
 
   // Merge upload state with API photos
   const galleryItems = useMemo(() => {

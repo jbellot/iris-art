@@ -19,7 +19,7 @@ from app.services.exports import (
     get_export_job,
     list_export_jobs,
 )
-from app.workers.tasks.hd_export import export_hd_image
+from app.workers.celery_app import celery_app
 
 router = APIRouter(prefix="/api/v1/exports", tags=["exports"])
 
@@ -54,8 +54,9 @@ async def request_hd_export(
             request.source_job_id,
         )
 
-        # Submit to Celery (default queue - not high priority)
-        export_hd_image.apply_async(
+        # Submit to Celery by name (avoids importing cv2 in web process)
+        celery_app.send_task(
+            "app.workers.tasks.hd_export.export_hd_image",
             args=[
                 str(job.id),
                 str(current_user.id),

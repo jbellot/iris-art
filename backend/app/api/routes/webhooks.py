@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
-from app.core.db import get_db
+from app.api.deps import get_session
 from app.models.webhook_event import WebhookEvent
 from app.services.purchases import handle_purchase_event, verify_subscriber_status
 
@@ -20,7 +20,7 @@ router = APIRouter()
 @router.post("/revenuecat", status_code=status.HTTP_200_OK)
 async def revenuecat_webhook(
     request: Request,
-    db: AsyncSession = Depends(get_db),
+    db: AsyncSession = Depends(get_session),
     authorization: str = Header(None),
 ) -> Dict[str, str]:
     """Receive and process RevenueCat webhook events.

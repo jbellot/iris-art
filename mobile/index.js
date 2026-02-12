@@ -8,7 +8,7 @@ import App from './src/App';
 import { name as appName } from './app.json';
 
 Sentry.init({
-  dsn: '__SENTRY_DSN__',  // Replace with actual DSN from Sentry project
+  dsn: '',  // TODO: Replace with actual DSN from Sentry project
   environment: __DEV__ ? 'development' : 'production',
   enabled: !__DEV__,
   tracesSampleRate: 0.1,
